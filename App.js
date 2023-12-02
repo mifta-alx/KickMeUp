@@ -1,86 +1,9 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {Bag2, Heart, Notification, SearchNormal1} from 'iconsax-react-native';
+import {Bag2, Notification, SearchNormal1} from 'iconsax-react-native';
 import {colors, fontType} from './src/theme';
-
-const ListItem = () => {
-  return (
-    <ScrollView
-      contentContainerStyle={item.container}
-      showsHorizontalScrollIndicator={false}
-      horizontal>
-      <TouchableOpacity style={item.card}>
-        <Heart
-          variant="Linear"
-          size={20}
-          color={colors.black()}
-          style={item.wishlist}
-        />
-        <Image
-          source={require('./src/assets/images/samba(1).jpg')}
-          style={item.image}
-        />
-        <View style={item.info}>
-          <View style={item.textContainer}>
-            <Text style={item.brand}>Adidas</Text>
-            <Text style={item.type}>
-              Adidas Samba OG Cloud White Core Black
-            </Text>
-          </View>
-          <Text style={item.price}>IDR 2,100,000</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={item.card}>
-        <Heart
-          variant="Linear"
-          size={20}
-          color={colors.black()}
-          style={item.wishlist}
-        />
-        <Image
-          source={require('./src/assets/images/nb(1).jpg')}
-          style={item.image}
-        />
-        <View style={item.info}>
-          <View style={item.textContainer}>
-            <Text style={item.brand}>New Balance</Text>
-            <Text style={item.type}>New Balance 530 White SIlver Navy</Text>
-          </View>
-          <Text style={item.price}>IDR 1,200,000</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={item.card}>
-        <Heart
-          variant="Linear"
-          size={20}
-          color={colors.black()}
-          style={item.wishlist}
-        />
-        <Image
-          source={require('./src/assets/images/yeezy.jpg')}
-          style={item.image}
-        />
-        <View style={item.info}>
-          <View style={item.textContainer}>
-            <Text style={item.brand}>Adidas</Text>
-            <Text style={item.type}>
-              Adidas Yeezy Boost 350 V2 MX Dark Salt
-            </Text>
-          </View>
-          <Text style={item.price}>IDR 4,300,000</Text>
-        </View>
-      </TouchableOpacity>
-    </ScrollView>
-  );
-};
+import { ListCategory, ListItem } from './src/components';
+import { dataItem, categoryItem } from './data';
 
 const App = () => {
   return (
@@ -98,29 +21,7 @@ const App = () => {
           <Notification variant="Linear" color={colors.black()} size={24} />
           <Bag2 variant="Linear" color={colors.black()} size={24} />
         </View>
-        <ScrollView
-          horizontal
-          contentContainerStyle={category.container}
-          showsHorizontalScrollIndicator={false}>
-          <View style={[category.item, {backgroundColor: colors.black()}]}>
-            <Text style={[category.text, {color: colors.white()}]}>All</Text>
-          </View>
-          <View style={category.item}>
-            <Text style={category.text}>Sports</Text>
-          </View>
-          <View style={category.item}>
-            <Text style={category.text}>Casual</Text>
-          </View>
-          <View style={category.item}>
-            <Text style={category.text}>Lifestyle</Text>
-          </View>
-          <View style={category.item}>
-            <Text style={category.text}>Sneakers</Text>
-          </View>
-          <View style={category.item}>
-            <Text style={category.text}>Luxury</Text>
-          </View>
-        </ScrollView>
+        <ListCategory data={categoryItem}/>
         <View style={{paddingHorizontal: 24, paddingVertical: 10}}>
           <Image
             source={require('./src/assets/images/1.jpg')}
@@ -134,7 +35,7 @@ const App = () => {
               <Text style={section.button}>View All</Text>
             </TouchableOpacity>
           </View>
-          <ListItem />
+          <ListItem data={dataItem}/>
         </View>
         <View style={{backgroundColor:colors.black()}}>
           <View style={[section.header,{paddingVertical:14}]}>
@@ -143,7 +44,7 @@ const App = () => {
               <Text style={[section.button, {color:colors.white()}]}>View All</Text>
             </TouchableOpacity>
           </View>
-          <ListItem />
+          <ListItem data={dataItem}/>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -151,7 +52,6 @@ const App = () => {
 };
 
 export default App;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -185,24 +85,6 @@ const searchBar = StyleSheet.create({
     fontFamily: fontType['Pjs-Medium'],
   },
 });
-const category = StyleSheet.create({
-  container: {
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    gap: 10,
-  },
-  item: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: colors.extraLightGray(),
-    borderRadius: 25,
-  },
-  text: {
-    fontFamily: fontType['Pjs-Medium'],
-    fontSize: 12,
-    color: colors.midGray(),
-  },
-});
 const carousel = StyleSheet.create({
   image: {
     width: 'auto',
@@ -228,34 +110,4 @@ const section = StyleSheet.create({
     fontSize: 12,
     color: colors.black(),
   },
-});
-const item = StyleSheet.create({
-  container: {paddingHorizontal: 24, paddingVertical: 14, gap: 14},
-  card: {
-    height: 250,
-    width: 165,
-    borderWidth: 1,
-    borderColor: colors.extraLightGray(),
-    borderRadius: 10,
-    backgroundColor:colors.white()
-  },
-  image: {width: 'auto', height: 135, borderRadius:10},
-  info: {padding: 14, justifyContent: 'space-between', flex: 1},
-  brand: {
-    fontFamily: fontType['Pjs-SemiBold'],
-    fontSize: 10,
-    color: colors.black(),
-  },
-  price: {
-    fontSize: 12,
-    fontFamily: fontType['Cousine-R'],
-    color: colors.black(),
-  },
-  type: {
-    fontFamily: fontType['Pjs-Regular'],
-    fontSize: 10,
-    color: colors.black(),
-  },
-  textContainer: {gap: 5},
-  wishlist: {position: 'absolute', top: 10, right: 10, zIndex: 999},
 });
