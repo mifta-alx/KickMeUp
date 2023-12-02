@@ -1,26 +1,14 @@
 import {StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {Bag2, Notification, SearchNormal1} from 'iconsax-react-native';
 import {colors, fontType} from './src/theme';
-import { ListCategory, ListItem } from './src/components';
+import { ListCategory, ListItem, Searchbar } from './src/components';
 import { dataItem, categoryItem } from './data';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.container}>
+      <Searchbar/>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={header.container}>
-          <View style={searchBar.container}>
-            <SearchNormal1
-              variant="Linear"
-              color={colors.midGray()}
-              size={20}
-            />
-            <Text style={searchBar.text}>Search</Text>
-          </View>
-          <Notification variant="Linear" color={colors.black()} size={24} />
-          <Bag2 variant="Linear" color={colors.black()} size={24} />
-        </View>
         <ListCategory data={categoryItem}/>
         <View style={{paddingHorizontal: 24, paddingVertical: 10}}>
           <Image

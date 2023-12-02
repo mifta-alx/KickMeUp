@@ -1,3 +1,4 @@
 import ListItem from "./ListItem";
 import ListCategory from "./ListCategory";
-export {ListItem, ListCategory}
+import Searchbar from "./Searchbar";
+export {ListItem, ListCategory, Searchbar}
