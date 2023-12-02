@@ -9,32 +9,74 @@ export const categoryItem = [
 export const dataItem = [
     {
         id : 1,
-        brand : 'Adidas',
-        type : 'Adidas Samba OG Cloud White Core Black',
+        brand : 'ASICS',
+        type : 'ASICS Gel-Kayano 14 JJJJound Silver White',
         category : 'sneakers',
-        price : '2100000',
+        price : '9350000',
         image : {
-            image_1 : require('./src/assets/images/samba(1).jpg')
+            image_1 : require('./src/assets/images/asics-gel-kayano-14-jjjjound.jpg')
         }
     },
     {
         id : 2,
         brand : 'New Balance',
-        type : 'New Balance 530 White SIlver Navy',
+        type : 'New Balance 2002R Protection Pack Rain Cloud',
         category : 'sneakers',
-        price : '1200000',
+        price : '3050000',
         image : {
-            image_1 : require('./src/assets/images/nb(1).jpg')
+            image_1 : require('./src/assets/images/nb-2002r-protection-pack-rain-cloud(1).jpg')
         }
     },
     {
         id : 3,
         brand : 'Adidas',
+        type : 'Adidas Samba OG Cloud White Core Black',
+        category : 'sneakers',
+        price : '2100000',
+        image : {
+            image_1 : require('./src/assets/images/samba-og-cloud-white-core-black.jpg')
+        }
+    },
+    {
+        id : 4,
+        brand : 'Adidas',
         type : 'Adidas Yeezy Boost 350 V2 MX Dark Salt',
         category : 'sneakers',
         price : '4300000',
         image : {
-            image_1 : require('./src/assets/images/yeezy(1).jpg')
+            image_1 : require('./src/assets/images/adidas-yezzy-350-v2-mx-dark-salt.jpg')
         }
+    },
+    {
+        id : 5,
+        brand : 'New Balance',
+        type : 'New Balance 530 White Silver Navy',
+        category : 'sneakers',
+        price : '1200000',
+        image : {
+            image_1 : require('./src/assets/images/nb-530-white-silver-navy(1).jpg')
+        }
+    },
+    {
+        id : 6,
+        brand : 'Air Jordan',
+        type : 'Air Jordan 1 Retro Chicago (2015)',
+        category : 'sneakers',
+        price : '13000000',
+        image : {
+            image_1 : require('./src/assets/images/air-jordan-1-retro-chicago-2015.jpg')
+        }
+    },
+]
+
+export const wishlistData = [
+    {
+        item_id : 1,
+    },
+    {
+        item_id : 2,
+    },
+    {
+        item_id : 5,
     },
 ]

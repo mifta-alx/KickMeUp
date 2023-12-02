@@ -32,7 +32,7 @@ const Item = ({itemdata, variant, onPress}) => {
   );
 };
 
-const ListItem = ({data}) => {
+const ListItem = ({data, layoutType}) => {
   const [wishlist, setWishlist] = useState([]);
   const toggleWishlist = itemId => {
     if (wishlist.includes(itemId)) {
@@ -51,16 +51,29 @@ const ListItem = ({data}) => {
       />
     );
   };
-  return (
-    <FlatList
+  if(layoutType == 'vertical'){
+    return (
+      <FlatList
       data={data}
       keyExtractor={item => item.id}
       renderItem={item => renderItem({...item})}
-      horizontal
-      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={item.container}
-    />
-  );
+      numColumns={2}
+      columnWrapperStyle={{justifyContent: 'space-between'}}/>
+    )
+  }else{
+    return (
+      <FlatList
+        data={data}
+        keyExtractor={item => item.id}
+        renderItem={item => renderItem({...item})}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={item.container}
+        horizontal
+      />
+    )
+  }
 };
 
 export default ListItem;
