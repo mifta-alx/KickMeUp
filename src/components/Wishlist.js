@@ -6,16 +6,16 @@ import {
     TouchableOpacity,
     Image,
     TouchableHighlight,
+    Dimensions
   } from 'react-native';
   import {Heart} from 'iconsax-react-native';
   import React, {useState} from 'react';
   import {colors, fontType} from '../theme';
-  
+  import { formatPrice } from '../utils/formatPrice';
+
+  const windowWidth = Dimensions.get('window').width;
+
   const Item = ({itemdata}) => {
-    const formatPrice = price => {
-      const formatted = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      return formatted;
-    };
     const [BtnColor, setBtnColor] = useState(colors.black());
     return (
       <TouchableOpacity style={item.card}>
@@ -65,7 +65,7 @@ const item = StyleSheet.create({
     container: {paddingHorizontal: 24, paddingVertical: 14, gap: 14},
     card: {
       height: 290,
-      width: 165,
+      width: windowWidth*0.41984733,
       borderWidth: 1,
       borderColor: colors.extraLightGray(),
       borderRadius: 10,

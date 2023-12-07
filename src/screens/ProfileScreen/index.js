@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, SafeAreaView, Image} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 import {
   ArrowRight2,
@@ -108,7 +108,7 @@ const Order = ({icon, title}) => {
 
 const ProfileScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={header.container}>
         <Text style={header.title}>Profile</Text>
         <Setting2 variant="Linear" size={24} color={colors.black()} />
@@ -203,7 +203,7 @@ const ProfileScreen = () => {
           </Text>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

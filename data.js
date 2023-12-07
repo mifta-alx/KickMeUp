@@ -15,6 +15,13 @@ export const dataItem = [
         price : '9350000',
         image : {
             image_1 : require('./src/assets/images/asics-gel-kayano-14-jjjjound.jpg')
+        },
+        description : 'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+        attributes : {
+            sku : 'M2002RDA',
+            color : 'RAIN CLOUD/GREY',
+            releaseDate : '13th August 2021',
+            retailPrice : 2750000
         }
     },
     {
@@ -25,6 +32,13 @@ export const dataItem = [
         price : '3050000',
         image : {
             image_1 : require('./src/assets/images/nb-2002r-protection-pack-rain-cloud(1).jpg')
+        },
+        description : 'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+        attributes : {
+            sku : 'M2002RDA',
+            color : 'RAIN CLOUD/GREY',
+            releaseDate : '13th August 2021',
+            retailPrice : 2750000
         }
     },
     {
@@ -35,6 +49,13 @@ export const dataItem = [
         price : '2100000',
         image : {
             image_1 : require('./src/assets/images/samba-og-cloud-white-core-black.jpg')
+        },
+        description : 'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+        attributes : {
+            sku : 'M2002RDA',
+            color : 'RAIN CLOUD/GREY',
+            releaseDate : '13th August 2021',
+            retailPrice : 2750000
         }
     },
     {
@@ -45,6 +66,13 @@ export const dataItem = [
         price : '4300000',
         image : {
             image_1 : require('./src/assets/images/adidas-yezzy-350-v2-mx-dark-salt.jpg')
+        },
+        description : 'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+        attributes : {
+            sku : 'M2002RDA',
+            color : 'RAIN CLOUD/GREY',
+            releaseDate : '13th August 2021',
+            retailPrice : 2750000
         }
     },
     {
@@ -55,6 +83,13 @@ export const dataItem = [
         price : '1200000',
         image : {
             image_1 : require('./src/assets/images/nb-530-white-silver-navy(1).jpg')
+        },
+        description : 'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+        attributes : {
+            sku : 'M2002RDA',
+            color : 'RAIN CLOUD/GREY',
+            releaseDate : '13th August 2021',
+            retailPrice : 2750000
         }
     },
     {
@@ -65,6 +100,13 @@ export const dataItem = [
         price : '13000000',
         image : {
             image_1 : require('./src/assets/images/air-jordan-1-retro-chicago-2015.jpg')
+        },
+        description : 'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+        attributes : {
+            sku : 'M2002RDA',
+            color : 'RAIN CLOUD/GREY',
+            releaseDate : '13th August 2021',
+            retailPrice : 2750000
         }
     },
 ]

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, SafeAreaView} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colors, fontType} from '../../theme';
 import {Bag2, Notification} from 'iconsax-react-native';
@@ -17,14 +17,10 @@ const WishlistScreen = () => {
     getData()
   }, [wishlistData])
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={header.container}>
         <Text
-          style={{
-            fontFamily: fontType['Pjs-Bold'],
-            fontSize: 18,
-            color: colors.black(),
-          }}>
+          style={header.title}>
           Wishlist ({wishlist.length})
         </Text>
         <View style={{flexDirection: 'row', gap: 16, alignItems: 'center'}}>
@@ -33,7 +29,7 @@ const WishlistScreen = () => {
         </View>
       </View>
       <Wishlist data={wishlist}/>
-    </SafeAreaView>
+    </View>
   );
 };
 

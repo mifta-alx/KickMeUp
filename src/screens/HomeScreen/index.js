@@ -2,7 +2,6 @@ import {
     StyleSheet,
     Text,
     View,
-    SafeAreaView,
     ScrollView,
     Image,
     TouchableOpacity,
@@ -14,7 +13,7 @@ import {
 
 const HomeScreen = () => {
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container} >
         <Searchbar/>
           <ScrollView showsVerticalScrollIndicator={false}>
             <ListCategory data={categoryItem} filter={false}/>
@@ -31,7 +30,7 @@ const HomeScreen = () => {
                   <Text style={section.button}>View All</Text>
                 </TouchableOpacity>
               </View>
-              <ListItem data={dataItem}/>
+              <ListItem data={dataItem.slice(0, 3)}/>
             </View>
             <View style={{backgroundColor:colors.black()}}>
               <View style={[section.header,{paddingVertical:14}]}>
@@ -43,7 +42,7 @@ const HomeScreen = () => {
               <ListItem data={dataItem}/>
             </View>
           </ScrollView>
-        </SafeAreaView>
+        </View>
       );
 }
 

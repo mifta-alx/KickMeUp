@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import { ListCategory, ListItem, Searchbar } from '../../components'
 import { categoryItem, dataItem } from '../../../data'
@@ -6,11 +6,11 @@ import { colors } from '../../theme'
 
 const MarketScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Searchbar/>
       <ListCategory data={categoryItem} filter={true}/>
       <ListItem data={dataItem} layoutType="vertical"/>
-    </SafeAreaView>
+    </View>
   )
 }
 

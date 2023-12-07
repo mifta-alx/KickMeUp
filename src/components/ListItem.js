@@ -5,18 +5,19 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Dimensions
 } from 'react-native';
 import {Heart} from 'iconsax-react-native';
 import React, {useState} from 'react';
 import {colors, fontType} from '../theme';
+import { useNavigation } from '@react-navigation/native';
+import { formatPrice } from '../utils/formatPrice';
 
-const Item = ({itemdata, variant, onPress}) => {
-  const formatPrice = price => {
-    const formatted = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return formatted;
-  };
+const windowWidth = Dimensions.get('window').width;
+
+const Item = ({itemdata, variant, onPress, navigate}) => {
   return (
-    <TouchableOpacity style={item.card}>
+    <TouchableOpacity style={item.card} onPress={navigate} activeOpacity={0.8}>
       <TouchableOpacity onPress={onPress} style={item.wishlist}>
         <Heart variant={variant} size={20} color={colors.black()} />
       </TouchableOpacity>
@@ -33,6 +34,7 @@ const Item = ({itemdata, variant, onPress}) => {
 };
 
 const ListItem = ({data, layoutType}) => {
+  const navigation = useNavigation()
   const [wishlist, setWishlist] = useState([]);
   const toggleWishlist = itemId => {
     if (wishlist.includes(itemId)) {
@@ -48,6 +50,7 @@ const ListItem = ({data, layoutType}) => {
         variant={variant}
         itemdata={item}
         onPress={() => toggleWishlist(item.id)}
+        navigate={() => navigation.navigate('ItemDetail', {itemId : item.id})}
       />
     );
   };
@@ -82,7 +85,7 @@ const item = StyleSheet.create({
   container: {paddingHorizontal: 24, paddingVertical: 14, gap: 14},
   card: {
     height: 250,
-    width: 165,
+    width: windowWidth*0.41984733,
     borderWidth: 1,
     borderColor: colors.extraLightGray(),
     borderRadius: 10,
