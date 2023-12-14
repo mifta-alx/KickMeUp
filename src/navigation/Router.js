@@ -8,7 +8,8 @@ import {
   MarketScreen,
   WishlistScreen,
   ItemDetail,
-  ByCategory
+  ByCategory,
+  AddItem
 } from '../screens';
 import {Heart, Home, ProfileCircle, Shop} from 'iconsax-react-native';
 
@@ -120,6 +121,18 @@ const Router = () => {
       <Stack.Screen
         name="ByCategory"
         component={ByCategory}
+        options={{
+          headerShown: false, 
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection : 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name="AddItem"
+        component={AddItem}
         options={{
           headerShown: false, 
           animationEnabled: true,

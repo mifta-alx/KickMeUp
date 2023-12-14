@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, ScrollView, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {
   ArrowRight2,
@@ -15,6 +15,7 @@ import {
   TruckFast,
 } from 'iconsax-react-native';
 import {colors, fontType} from '../../theme';
+import { useNavigation } from '@react-navigation/native';
 
 const menu = [
   {
@@ -107,13 +108,16 @@ const Order = ({icon, title}) => {
 };
 
 const ProfileScreen = () => {
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <View style={header.container}>
         <Text style={header.title}>Profile</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('AddItem')}>
         <Setting2 variant="Linear" size={24} color={colors.black()} />
+        </TouchableOpacity>
       </View>
-      <View style={body.container}>
+      <ScrollView contentContainerStyle={body.container} showsVerticalScrollIndicator={false}>
         <View style={body.profilesection}>
           <Image
             source={{
@@ -202,7 +206,7 @@ const ProfileScreen = () => {
             version 1.0.0
           </Text>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
