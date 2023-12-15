@@ -62,7 +62,7 @@ const AddItem = () => {
         console.log(error);
       })
       setLoading(false)
-      navigation.navigate('Home')
+      navigation.navigate('MyProducts')
     }catch(err){
       console.log(err);
     }
