@@ -113,11 +113,12 @@ const ProfileScreen = () => {
     <View style={styles.container}>
       <View style={header.container}>
         <Text style={header.title}>Profile</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('AddItem')}>
+        <TouchableOpacity onPress={() => {}}>
         <Setting2 variant="Linear" size={24} color={colors.black()} />
         </TouchableOpacity>
       </View>
       <ScrollView contentContainerStyle={body.container} showsVerticalScrollIndicator={false}>
+        <TouchableOpacity activeOpacity={0.8} onPress={()=>navigation.navigate('MyProducts')}>
         <View style={body.profilesection}>
           <Image
             source={{
@@ -145,6 +146,7 @@ const ProfileScreen = () => {
           </View>
           <ArrowRight2 color={colors.black()} variant="Linear" size={20} />
         </View>
+        </TouchableOpacity>
         <View style={{gap: 10}}>
           <View
             style={{

@@ -6,7 +6,7 @@ import React, {useState} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Item from './Item';
 
-const ListItem = ({data, layoutType}) => {
+const ListItem = ({data, layoutType, type}) => {
   const navigation = useNavigation()
   const [wishlist, setWishlist] = useState([]);
   const toggleWishlist = itemId => {
@@ -23,7 +23,7 @@ const ListItem = ({data, layoutType}) => {
         variant={variant}
         itemdata={item}
         onPress={() => toggleWishlist(item.id)}
-        navigate={() => navigation.navigate('ItemDetail', {itemId : item.id})}
+        navigate={() => navigation.navigate('ItemDetail', {itemId : item.id, type })}
       />
     );
   };

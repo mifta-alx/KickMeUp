@@ -9,7 +9,9 @@ import {
   WishlistScreen,
   ItemDetail,
   ByCategory,
-  AddItem
+  AddItem,
+  MyProducts,
+  EditItem
 } from '../screens';
 import {Heart, Home, ProfileCircle, Shop} from 'iconsax-react-native';
 
@@ -133,6 +135,30 @@ const Router = () => {
       <Stack.Screen
         name="AddItem"
         component={AddItem}
+        options={{
+          headerShown: false, 
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection : 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name="EditItem"
+        component={EditItem}
+        options={{
+          headerShown: false, 
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection : 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name="MyProducts"
+        component={MyProducts}
         options={{
           headerShown: false, 
           animationEnabled: true,

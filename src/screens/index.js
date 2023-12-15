@@ -5,4 +5,6 @@ import WishlistScreen from "./WishlistScreen";
 import ItemDetail from "./ItemDetail";
 import ByCategory from "./ByCategory";
 import AddItem from "./AddItem";
-export {HomeScreen, ProfileScreen, MarketScreen, WishlistScreen, ItemDetail, ByCategory, AddItem};
+import EditItem from "./EditItem";
+import MyProducts from "./MyProducts";
+export {HomeScreen, ProfileScreen, MarketScreen, WishlistScreen, ItemDetail, ByCategory, AddItem, EditItem, MyProducts};

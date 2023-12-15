@@ -10,22 +10,24 @@ import {Heart} from 'iconsax-react-native';
 import React from 'react';
 import {colors, fontType} from '../theme';
 import {formatPrice} from '../utils/formatPrice';
+import { brandData } from '../../data';
 
 const windowWidth = Dimensions.get('window').width;
 
 const Item = ({itemdata, variant, onPress, navigate}) => {
+  const brand = brandData.find(data => data.id === itemdata?.brandId)
   return (
     <TouchableOpacity style={item.card} onPress={navigate} activeOpacity={0.8}>
       <TouchableOpacity onPress={onPress} style={item.wishlist}>
         <Heart variant={variant} size={20} color={colors.black()} />
       </TouchableOpacity>
-      <Image source={itemdata.image.image_1} style={item.image} />
+      <Image source={{uri : itemdata?.image}} style={item.image} />
       <View style={item.info}>
         <View style={item.textContainer}>
-          <Text style={item.brand}>{itemdata.brand}</Text>
-          <Text style={item.type}>{itemdata.type}</Text>
+          <Text style={item.brand}>{brand.brand_name}</Text>
+          <Text style={item.type}>{itemdata.productName}</Text>
         </View>
-        <Text style={item.price}>IDR {formatPrice(itemdata.price)}</Text>
+        <Text style={item.price}>IDR {formatPrice(itemdata?.price)}</Text>
       </View>
     </TouchableOpacity>
   );

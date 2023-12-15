@@ -47,18 +47,20 @@ export const brandData = [
     brand_name: 'Asics',
     brand_logo: require('./src/assets/images/asics_logo.png'),
   },
+  {
+    id: 9,
+    brand_name: 'New Balance',
+    brand_logo: require('./src/assets/images/newbalance_logo.png'),
+  },
 ];
 export const dataItem = [
   {
     id: 1,
-    brand: 'ASICS',
-    type: 'ASICS Gel-Kayano 14 JJJJound Silver White',
-    category: 'sneakers',
+    brandId: 8,
+    productName: 'ASICS Gel-Kayano 14 JJJJound Silver White',
     price: '9350000',
-    image: {
-      image_1: require('./src/assets/images/asics-gel-kayano-14-jjjjound.jpg'),
-    },
-    description:
+    image: require('./src/assets/images/asics-gel-kayano-14-jjjjound.jpg'),
+    productDescription:
       'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
     attributes: {
       sku: 'M2002RDA',
@@ -69,14 +71,11 @@ export const dataItem = [
   },
   {
     id: 2,
-    brand: 'New Balance',
-    type: 'New Balance 2002R Protection Pack Rain Cloud',
-    category: 'sneakers',
+    brandId: 9,
+    productName: 'New Balance 2002R Protection Pack Rain Cloud',
     price: '3050000',
-    image: {
-      image_1: require('./src/assets/images/nb-2002r-protection-pack-rain-cloud(1).jpg'),
-    },
-    description:
+    image: require('./src/assets/images/nb-2002r-protection-pack-rain-cloud(1).jpg'),
+    productDescription:
       'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
     attributes: {
       sku: 'M2002RDA',
@@ -87,14 +86,11 @@ export const dataItem = [
   },
   {
     id: 3,
-    brand: 'Adidas',
-    type: 'Adidas Samba OG Cloud White Core Black',
-    category: 'sneakers',
+    brandId: 1,
+    productName: 'Adidas Samba OG Cloud White Core Black',
     price: '2100000',
-    image: {
-      image_1: require('./src/assets/images/samba-og-cloud-white-core-black.jpg'),
-    },
-    description:
+    image: require('./src/assets/images/samba-og-cloud-white-core-black.jpg'),
+    productDescription:
       'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
     attributes: {
       sku: 'M2002RDA',
@@ -105,14 +101,11 @@ export const dataItem = [
   },
   {
     id: 4,
-    brand: 'Adidas',
-    type: 'Adidas Yeezy Boost 350 V2 MX Dark Salt',
-    category: 'sneakers',
+    brandId: 1,
+    productName: 'Adidas Yeezy Boost 350 V2 MX Dark Salt',
     price: '4300000',
-    image: {
-      image_1: require('./src/assets/images/adidas-yezzy-350-v2-mx-dark-salt.jpg'),
-    },
-    description:
+    image: require('./src/assets/images/adidas-yezzy-350-v2-mx-dark-salt.jpg'),
+    productDescription:
       'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
     attributes: {
       sku: 'M2002RDA',
@@ -123,14 +116,11 @@ export const dataItem = [
   },
   {
     id: 5,
-    brand: 'New Balance',
-    type: 'New Balance 530 White Silver Navy',
-    category: 'sneakers',
+    brandId: 9,
+    productName: 'New Balance 530 White Silver Navy',
     price: '1200000',
-    image: {
-      image_1: require('./src/assets/images/nb-530-white-silver-navy(1).jpg'),
-    },
-    description:
+    image: require('./src/assets/images/nb-530-white-silver-navy(1).jpg'),
+    productDescription:
       'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
     attributes: {
       sku: 'M2002RDA',
@@ -141,14 +131,11 @@ export const dataItem = [
   },
   {
     id: 6,
-    brand: 'Air Jordan',
-    type: 'Air Jordan 1 Retro Chicago (2015)',
-    category: 'sneakers',
+    brandId:7, 
+    productName: 'Air Jordan 1 Retro Chicago (2015)',
     price: '13000000',
-    image: {
-      image_1: require('./src/assets/images/air-jordan-1-retro-chicago-2015.jpg'),
-    },
-    description:
+    image: require('./src/assets/images/air-jordan-1-retro-chicago-2015.jpg'),
+    productDescription:
       'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
     attributes: {
       sku: 'M2002RDA',

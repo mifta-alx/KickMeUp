@@ -7,31 +7,66 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  ActivityIndicator
 } from 'react-native';
 import {ArrowLeft} from 'iconsax-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {fontType, colors} from '../../theme';
-import {brandData} from '../../../data';
+import {brandData, categoryItem} from '../../../data';
+import axios from 'axios';
 
 const AddItem = () => {
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false)
   const [itemData, setitemData] = useState({
     brandId: 0,
     productName: '',
     productDescription: '',
     image: '',
     price: '',
-    sku: '',
-    color: '',
-    releaseDate: '',
-    retailPrice: '',
+    categoryId : 0,
+    attributes : {
+      sku: '',
+      color: '',
+      releaseDate: '',
+      retailPrice: '',
+    },
   });
   const handleChange = (key, value) => {
-    setitemData({
-      ...itemData,
-      [key]: value,
-    });
+    if (key.includes('.')) {
+      const [parentKey, nestedKey] = key.split('.');
+      setitemData({
+        ...itemData,
+        [parentKey]: {
+          ...itemData[parentKey],
+          [nestedKey]: value,
+        },
+      });
+    } else {
+      setitemData({
+        ...itemData,
+        [key]: value,
+      });
+    }
   };
-  const navigation = useNavigation();
+  const handleAdd = async () => {
+    setLoading(true)
+    try{
+      await axios.post('https://657b24f9394ca9e4af13d51c.mockapi.io/kickmeup/product', {
+        ...itemData,
+        createdAt : new Date()
+      }).then(function (response) {
+        console.log('res', response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      setLoading(false)
+      navigation.navigate('Home')
+    }catch(err){
+      console.log(err);
+    }
+  }
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -39,7 +74,7 @@ const AddItem = () => {
           <ArrowLeft color={colors.black()} variant="Linear" size={24} />
         </TouchableOpacity>
         <View style={{flex: 1, alignItems: 'center'}}>
-          <Text style={styles.title}>Add Item</Text>
+          <Text style={styles.title}>Add Product</Text>
         </View>
       </View>
       <ScrollView
@@ -51,10 +86,9 @@ const AddItem = () => {
         <View style={textInput.borderDashed}>
           <TextInput
             placeholder="Product name"
-            value={itemData.title}
-            onChangeText={text => handleChange('title', text)}
+            value={itemData.productName}
+            onChangeText={text => handleChange('productName', text)}
             placeholderTextColor={colors.gray(0.6)}
-            multiline
             style={textInput.title}
           />
         </View>
@@ -90,6 +124,51 @@ const AddItem = () => {
             );
           })}
         </View>
+        <View style={[textInput.borderDashed]}>
+          <TextInput
+            placeholder="Price"
+            value={itemData.price}
+            onChangeText={text => handleChange('price', text)}
+            placeholderTextColor={colors.gray(0.6)}
+            style={textInput.content}
+          />
+        </View>
+        <View style={[textInput.borderDashed]}>
+          <Text
+            style={{
+              fontSize: 12,
+              fontFamily: fontType["Pjs-Regular"],
+              color: colors.gray(),
+            }}
+          >
+            Category
+          </Text>
+          <View style={category.container}>
+            {categoryItem.slice(1).map((item, index) => {
+              const bgColor =
+                item.id === itemData.categoryId
+                  ? colors.black()
+                  : colors.gray(0.08);
+              const color =
+                item.id === itemData.categoryId
+                  ? colors.white()
+                  : colors.midGray();
+              return (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() =>
+                    handleChange("categoryId", item.id)
+                  }
+                  style={[category.item, { backgroundColor: bgColor }]}
+                >
+                  <Text style={[category.name, { color: color }]}>
+                    {item.category}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
         <View style={[textInput.borderDashed, {minHeight: 180}]}>
           <TextInput
             placeholder="Product description"
@@ -111,9 +190,9 @@ const AddItem = () => {
         </View>
         <View style={[textInput.borderDashed]}>
           <TextInput
-            placeholder="Price"
-            value={itemData.price}
-            onChangeText={text => handleChange('price', text)}
+            placeholder="SKU"
+            value={itemData.attributes.sku}
+            onChangeText={text => handleChange('attributes.sku', text)}
             placeholderTextColor={colors.gray(0.6)}
             style={textInput.content}
           />
@@ -121,8 +200,8 @@ const AddItem = () => {
         <View style={[textInput.borderDashed]}>
           <TextInput
             placeholder="Color"
-            value={itemData.color}
-            onChangeText={text => handleChange('color', text)}
+            value={itemData.attributes.color}
+            onChangeText={text => handleChange('attributes.color', text)}
             placeholderTextColor={colors.gray(0.6)}
             style={textInput.content}
           />
@@ -130,8 +209,8 @@ const AddItem = () => {
         <View style={[textInput.borderDashed]}>
           <TextInput
             placeholder="Release date"
-            value={itemData.relaseDate}
-            onChangeText={text => handleChange('releaseDate', text)}
+            value={itemData.attributes.releaseDate}
+            onChangeText={text => handleChange('attributes.releaseDate', text)}
             placeholderTextColor={colors.gray(0.6)}
             style={textInput.content}
           />
@@ -139,18 +218,23 @@ const AddItem = () => {
         <View style={[textInput.borderDashed]}>
           <TextInput
             placeholder="Retail price"
-            value={itemData.retailPrice}
-            onChangeText={text => handleChange('retailPrice', text)}
+            value={itemData.attributes.retailPrice}
+            onChangeText={text => handleChange('attributes.retailPrice', text)}
             placeholderTextColor={colors.gray(0.6)}
             style={textInput.content}
           />
         </View>
       </ScrollView>
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text style={styles.buttonLabel}>Upload</Text>
+        <TouchableOpacity style={styles.button} onPress={handleAdd}>
+          <Text style={styles.buttonLabel}>Add</Text>
         </TouchableOpacity>
       </View>
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color={colors.black()} />
+        </View>
+      )}
     </View>
   );
 };
@@ -204,6 +288,16 @@ const styles = StyleSheet.create({
     fontFamily: fontType['Pjs-SemiBold'],
     color: colors.white(),
   },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: colors.black(0.4),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 const textInput = StyleSheet.create({
   borderDashed: {
@@ -224,5 +318,27 @@ const textInput = StyleSheet.create({
     fontFamily: fontType['Pjs-Regular'],
     color: colors.black(),
     padding: 0,
+  },
+});
+const category = StyleSheet.create({
+  title: {
+    fontSize: 12,
+    fontFamily: fontType["Pjs-Regular"],
+    color: colors.gray(0.6),
+  },
+  container: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 10,
+  },
+  item: {
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 25,
+  },
+  name: {
+    fontSize: 10,
+    fontFamily: fontType["Pjs-Medium"],
   },
 });
