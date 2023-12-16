@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "43771476493",
+    "project_id": "kickmeup-40e80",
+    "storage_bucket": "kickmeup-40e80.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43771476493:android:c053517fd6f40eb5ba7344",
+        "android_client_info": {
+          "package_name": "com.kickmeup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEyWBh1Xn9_R_WbNaRurqnA-HaLB2D81s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

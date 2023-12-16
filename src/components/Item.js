@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Heart} from 'iconsax-react-native';
 import React from 'react';
 import {colors, fontType} from '../theme';
@@ -21,7 +22,15 @@ const Item = ({itemdata, variant, onPress, navigate}) => {
       <TouchableOpacity onPress={onPress} style={item.wishlist}>
         <Heart variant={variant} size={20} color={colors.black()} />
       </TouchableOpacity>
-      <Image source={{uri : itemdata?.image}} style={item.image} />
+      <FastImage
+            style={item.image} 
+            source={{
+              uri: itemdata?.image,
+              headers: {Authorization: 'someAuthToken'},
+              priority: FastImage.priority.high,
+            }}
+            resizeMode={FastImage.resizeMode.cover}
+          />
       <View style={item.info}>
         <View style={item.textContainer}>
           <Text style={item.brand}>{brand.brand_name}</Text>

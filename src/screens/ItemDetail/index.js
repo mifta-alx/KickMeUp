@@ -4,19 +4,20 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Image,
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import React, {useState, useRef, useCallback} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {colors, fontType} from '../../theme';
 import {Bag2, ArrowLeft2, Share, Heart, More} from 'iconsax-react-native';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {brandData} from '../../../data';
 import {formatPrice} from '../../utils/formatPrice';
 import {ListSize} from '../../components';
-import axios from 'axios';
 import ActionSheet from 'react-native-actions-sheet';
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
+import FastImage from 'react-native-fast-image';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -35,42 +36,48 @@ const ItemDetail = ({route}) => {
   const closeActionSheet = () => {
     actionSheetRef.current?.hide();
   };
-  
-  useFocusEffect(
-    useCallback(() => {
-      getProduct();
-    }, []),
-  );
 
-  const getProduct = async () => {
-    setLoading(true)
-    try {
-      const response = await axios.get(
-        `https://657b24f9394ca9e4af13d51c.mockapi.io/kickmeup/product/${itemId}`,
-      );
-      setItemData(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('products')
+      .doc(itemId)
+      .onSnapshot(documentSnapshot => {
+        const product = documentSnapshot.data();
+        if (product) {
+          setItemData(product);
+        } else {
+          console.log(`Product with ID ${itemId} not found.`);
+        }
+      });
+    setLoading(false);
+    return () => subscriber();
+  }, [itemId]);
   const navigateEdit = () => {
     closeActionSheet();
     navigation.navigate('EditItem', {itemId});
   };
   const handleDelete = async () => {
-    await axios
-      .delete(
-        `https://657b24f9394ca9e4af13d51c.mockapi.io/kickmeup/product/${itemId}`,
-      )
-      .then(() => {
-        closeActionSheet();
-        navigation.navigate('MyProducts');
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    setLoading(true);
+    try {
+      await firestore()
+        .collection('products')
+        .doc(itemId)
+        .delete()
+        .then(() => {
+          console.log('Product deleted!');
+        });
+      if (itemData?.image) {
+        const imageRef = storage().refFromURL(itemData?.image);
+        await imageRef.delete();
+      }
+      console.log('Product deleted!');
+      closeActionSheet();
+      setItemData(null);
+      setLoading(false)
+      navigation.navigate('MyProducts');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const brand = brandData.find(data => data.id === itemData?.brandId);
@@ -104,7 +111,14 @@ const ItemDetail = ({route}) => {
         </View>
       ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Image source={{uri: itemData?.image}} style={item.image} />
+          <FastImage
+            source={{
+              uri: itemData?.image,
+              headers: {Authorization: 'someAuthToken'},
+              priority: FastImage.priority.high,
+            }}
+            style={item.image}
+          />
           <View style={{paddingVertical: 16, gap: 16, paddingHorizontal: 24}}>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -122,7 +136,7 @@ const ItemDetail = ({route}) => {
             </View>
             <View style={{gap: 8}}>
               <Text style={item.type}>{itemData?.productName}</Text>
-              <Text style={item.price}>IDR {formatPrice(itemData?.price)}</Text>
+              <Text style={item.price}>IDR {itemData?.price ? formatPrice(itemData.price) : 'N/A'}</Text>
             </View>
           </View>
           <View style={{gap: 12}}>
@@ -164,7 +178,7 @@ const ItemDetail = ({route}) => {
                 {itemData?.attributes.releaseDate}
               </Text>
               <Text style={item.description}>
-                {formatPrice(itemData?.attributes.retailPrice)}
+                {itemData?.attributes.retailPrice ? formatPrice(itemData.attributes.retailPrice) : 'N/A'}
               </Text>
             </View>
           </View>

@@ -5,34 +5,33 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {colors, fontType} from '../../theme';
 import {ArrowLeft2, AddCircle, Box} from 'iconsax-react-native';
-import axios from 'axios';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {ListItem} from '../../components';
+import firestore from '@react-native-firebase/firestore';
 
 const MyProducts = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [myProduct, setMyProduct] = useState([]);
-  const getAllProducts = async () => {
-    setLoading(true);
-    try {
-      const product = await axios.get(
-        'https://657b24f9394ca9e4af13d51c.mockapi.io/kickmeup/product',
-      );
-      setMyProduct(product.data);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useFocusEffect(
-    useCallback(() => {
-      getAllProducts();
-    }, []),
-  );
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('products')
+      .onSnapshot(querySnapshot => {
+        const products = [];
+        querySnapshot.forEach(documentSnapshot => {
+          products.push({
+            ...documentSnapshot.data(),
+            id: documentSnapshot.id,
+          });
+        });
+        setMyProduct(products);
+        setLoading(false);
+      });
+    return () => subscriber();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={header.container}>

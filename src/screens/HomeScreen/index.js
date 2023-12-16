@@ -46,11 +46,6 @@ const HomeScreen = () => {
             </TouchableOpacity>
           </View>
           <ListItem data={dataItem} />
-          <View>
-            <TouchableOpacity onPress={() => navigation.navigate('ByCategory')}>
-              <Text>Nike</Text>
-            </TouchableOpacity>
-          </View>
         </View>
         <View>
           <View style={section.header}>

@@ -54,96 +54,96 @@ export const brandData = [
   },
 ];
 export const dataItem = [
-  {
-    id: 1,
-    brandId: 8,
-    productName: 'ASICS Gel-Kayano 14 JJJJound Silver White',
-    price: '9350000',
-    image: require('./src/assets/images/asics-gel-kayano-14-jjjjound.jpg'),
-    productDescription:
-      'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
-    attributes: {
-      sku: 'M2002RDA',
-      color: 'RAIN CLOUD/GREY',
-      releaseDate: '13th August 2021',
-      retailPrice: 2750000,
-    },
-  },
-  {
-    id: 2,
-    brandId: 9,
-    productName: 'New Balance 2002R Protection Pack Rain Cloud',
-    price: '3050000',
-    image: require('./src/assets/images/nb-2002r-protection-pack-rain-cloud(1).jpg'),
-    productDescription:
-      'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
-    attributes: {
-      sku: 'M2002RDA',
-      color: 'RAIN CLOUD/GREY',
-      releaseDate: '13th August 2021',
-      retailPrice: 2750000,
-    },
-  },
-  {
-    id: 3,
-    brandId: 1,
-    productName: 'Adidas Samba OG Cloud White Core Black',
-    price: '2100000',
-    image: require('./src/assets/images/samba-og-cloud-white-core-black.jpg'),
-    productDescription:
-      'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
-    attributes: {
-      sku: 'M2002RDA',
-      color: 'RAIN CLOUD/GREY',
-      releaseDate: '13th August 2021',
-      retailPrice: 2750000,
-    },
-  },
-  {
-    id: 4,
-    brandId: 1,
-    productName: 'Adidas Yeezy Boost 350 V2 MX Dark Salt',
-    price: '4300000',
-    image: require('./src/assets/images/adidas-yezzy-350-v2-mx-dark-salt.jpg'),
-    productDescription:
-      'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
-    attributes: {
-      sku: 'M2002RDA',
-      color: 'RAIN CLOUD/GREY',
-      releaseDate: '13th August 2021',
-      retailPrice: 2750000,
-    },
-  },
-  {
-    id: 5,
-    brandId: 9,
-    productName: 'New Balance 530 White Silver Navy',
-    price: '1200000',
-    image: require('./src/assets/images/nb-530-white-silver-navy(1).jpg'),
-    productDescription:
-      'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
-    attributes: {
-      sku: 'M2002RDA',
-      color: 'RAIN CLOUD/GREY',
-      releaseDate: '13th August 2021',
-      retailPrice: 2750000,
-    },
-  },
-  {
-    id: 6,
-    brandId:7, 
-    productName: 'Air Jordan 1 Retro Chicago (2015)',
-    price: '13000000',
-    image: require('./src/assets/images/air-jordan-1-retro-chicago-2015.jpg'),
-    productDescription:
-      'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
-    attributes: {
-      sku: 'M2002RDA',
-      color: 'RAIN CLOUD/GREY',
-      releaseDate: '13th August 2021',
-      retailPrice: 2750000,
-    },
-  },
+  // {
+  //   id: 1,
+  //   brandId: 8,
+  //   productName: 'ASICS Gel-Kayano 14 JJJJound Silver White',
+  //   price: '9350000',
+  //   image: require('./src/assets/images/asics-gel-kayano-14-jjjjound.jpg'),
+  //   productDescription:
+  //     'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+  //   attributes: {
+  //     sku: 'M2002RDA',
+  //     color: 'RAIN CLOUD/GREY',
+  //     releaseDate: '13th August 2021',
+  //     retailPrice: 2750000,
+  //   },
+  // },
+  // {
+  //   id: 2,
+  //   brandId: 9,
+  //   productName: 'New Balance 2002R Protection Pack Rain Cloud',
+  //   price: '3050000',
+  //   image: require('./src/assets/images/nb-2002r-protection-pack-rain-cloud(1).jpg'),
+  //   productDescription:
+  //     'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+  //   attributes: {
+  //     sku: 'M2002RDA',
+  //     color: 'RAIN CLOUD/GREY',
+  //     releaseDate: '13th August 2021',
+  //     retailPrice: 2750000,
+  //   },
+  // },
+  // {
+  //   id: 3,
+  //   brandId: 1,
+  //   productName: 'Adidas Samba OG Cloud White Core Black',
+  //   price: '2100000',
+  //   image: require('./src/assets/images/samba-og-cloud-white-core-black.jpg'),
+  //   productDescription:
+  //     'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+  //   attributes: {
+  //     sku: 'M2002RDA',
+  //     color: 'RAIN CLOUD/GREY',
+  //     releaseDate: '13th August 2021',
+  //     retailPrice: 2750000,
+  //   },
+  // },
+  // {
+  //   id: 4,
+  //   brandId: 1,
+  //   productName: 'Adidas Yeezy Boost 350 V2 MX Dark Salt',
+  //   price: '4300000',
+  //   image: require('./src/assets/images/adidas-yezzy-350-v2-mx-dark-salt.jpg'),
+  //   productDescription:
+  //     'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+  //   attributes: {
+  //     sku: 'M2002RDA',
+  //     color: 'RAIN CLOUD/GREY',
+  //     releaseDate: '13th August 2021',
+  //     retailPrice: 2750000,
+  //   },
+  // },
+  // {
+  //   id: 5,
+  //   brandId: 9,
+  //   productName: 'New Balance 530 White Silver Navy',
+  //   price: '1200000',
+  //   image: require('./src/assets/images/nb-530-white-silver-navy(1).jpg'),
+  //   productDescription:
+  //     'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+  //   attributes: {
+  //     sku: 'M2002RDA',
+  //     color: 'RAIN CLOUD/GREY',
+  //     releaseDate: '13th August 2021',
+  //     retailPrice: 2750000,
+  //   },
+  // },
+  // {
+  //   id: 6,
+  //   brandId:7, 
+  //   productName: 'Air Jordan 1 Retro Chicago (2015)',
+  //   price: '13000000',
+  //   image: require('./src/assets/images/air-jordan-1-retro-chicago-2015.jpg'),
+  //   productDescription:
+  //     'Lorem ipsum dolor sit amet consectetur. Egestas cursus viverra elit facilisi ante imperdiet turpis consequat ut. Nibh facilisi scelerisque habitasse pellentesque tellus porta. Metus odio et placerat nunc lorem libero at sed commodo. Facilisis lectus amet libero consequat etiam platea aenean at. Gravida tincidunt faucibus suspendisse ligula.',
+  //   attributes: {
+  //     sku: 'M2002RDA',
+  //     color: 'RAIN CLOUD/GREY',
+  //     releaseDate: '13th August 2021',
+  //     retailPrice: 2750000,
+  //   },
+  // },
 ];
 
 export const wishlistData = [

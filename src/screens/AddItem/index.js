@@ -7,25 +7,28 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
-import {ArrowLeft} from 'iconsax-react-native';
+import {ArrowLeft, Add, Image as ImageIcon} from 'iconsax-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {fontType, colors} from '../../theme';
 import {brandData, categoryItem} from '../../../data';
-import axios from 'axios';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+import ImagePicker from 'react-native-image-crop-picker';
+import FastImage from 'react-native-fast-image';
 
 const AddItem = () => {
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [itemData, setitemData] = useState({
     brandId: 0,
     productName: '',
     productDescription: '',
-    image: '',
+    image: null,
     price: '',
-    categoryId : 0,
-    attributes : {
+    categoryId: 0,
+    attributes: {
       sku: '',
       color: '',
       releaseDate: '',
@@ -49,24 +52,55 @@ const AddItem = () => {
       });
     }
   };
-  const handleAdd = async () => {
-    setLoading(true)
-    try{
-      await axios.post('https://657b24f9394ca9e4af13d51c.mockapi.io/kickmeup/product', {
-        ...itemData,
-        createdAt : new Date()
-      }).then(function (response) {
-        console.log('res', response);
+  const handleImagePick = async () => {
+    ImagePicker.openPicker({
+      width: 1080,
+      height: 1080,
+      cropping: true,
+    })
+      .then(image => {
+        handleChange('image', image.path);
       })
-      .catch(function (error) {
+      .catch(error => {
         console.log(error);
-      })
-      setLoading(false)
-      navigation.navigate('MyProducts')
-    }catch(err){
+      });
+  };
+  const handleAdd = async () => {
+    const productName = itemData.productName.replace(/\s+/g, '_').toLowerCase();
+    let filename = itemData.image.substring(
+      itemData.image.lastIndexOf('/') + 1,
+    );
+    const extension = filename.split('.').pop();
+    filename = `${productName}_${Date.now()}.${extension}`;
+    const reference = storage().ref(`productImages/${filename}`);
+
+    setLoading(true);
+    try {
+      await reference.putFile(itemData.image);
+      const url = await reference.getDownloadURL();
+      await firestore()
+        .collection('products')
+        .add({
+          brandId: itemData.brandId,
+          productName: itemData.productName,
+          productDescription: itemData.productDescription,
+          image: url,
+          price: itemData.price,
+          categoryId: itemData.categoryId,
+          attributes: {
+            sku: itemData.attributes.sku,
+            color: itemData.attributes.color,
+            releaseDate: itemData.attributes.releaseDate,
+            retailPrice: itemData.attributes.retailPrice,
+          },
+          createdAt: new Date(),
+        });
+      setLoading(false);
+      navigation.navigate('MyProducts');
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -92,6 +126,60 @@ const AddItem = () => {
             style={textInput.title}
           />
         </View>
+        {itemData.image ? (
+          <View style={{position: 'relative'}}>
+            <FastImage
+              style={{width: 100, height: 100, borderRadius: 5, resizeMode: 'cover'}}
+              source={{
+                uri: itemData.image,
+                headers: {Authorization: 'someAuthToken'},
+                priority: FastImage.priority.high,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+            />
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: -5,
+                left : 90,
+                backgroundColor: colors.black(),
+                borderRadius: 25,
+              }}
+              onPress={() => handleChange('image', null)}>
+              <Add
+                size={20}
+                variant="Linear"
+                color={colors.white()}
+                style={{transform: [{rotate: '45deg'}]}}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity onPress={handleImagePick}>
+            <View
+              style={[
+                textInput.borderDashed,
+                {
+                  width: 100,
+                  height : 100,
+                  gap: 10,
+                  paddingVertical: 30,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                },
+              ]}>
+              <ImageIcon color={colors.gray(0.6)} variant="Linear" size={24} />
+              <Text
+                style={{
+                  fontFamily: fontType['Pjs-SemiBold'],
+                  fontSize: 10,
+                  color: colors.gray(0.6),
+                }}>
+                Upload Image
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
         <View
           style={{
             flexDirection: 'row',
@@ -105,8 +193,15 @@ const AddItem = () => {
                 style={{gap: 10, alignItems: 'center'}}
                 key={index}
                 activeOpacity={0.6}
-                onPress={ () => handleChange('brandId', data.id)}>
-                <View style={{borderWidth: 2, borderColor: itemData.brandId == data.id ? colors.black() : colors.lightGray()}}>
+                onPress={() => handleChange('brandId', data.id)}>
+                <View
+                  style={{
+                    borderWidth: 2,
+                    borderColor:
+                      itemData.brandId == data.id
+                        ? colors.black()
+                        : colors.lightGray(),
+                  }}>
                   <Image
                     source={data.brand_logo}
                     style={{width: 60, height: 35}}
@@ -116,7 +211,10 @@ const AddItem = () => {
                   style={{
                     fontFamily: fontType['Pjs-SemiBold'],
                     fontSize: 10,
-                    color: itemData.brandId == data.id ? colors.black() : colors.midGray(),
+                    color:
+                      itemData.brandId == data.id
+                        ? colors.black()
+                        : colors.midGray(),
                   }}>
                   {data.brand_name}
                 </Text>
@@ -137,10 +235,9 @@ const AddItem = () => {
           <Text
             style={{
               fontSize: 12,
-              fontFamily: fontType["Pjs-Regular"],
+              fontFamily: fontType['Pjs-Regular'],
               color: colors.gray(),
-            }}
-          >
+            }}>
             Category
           </Text>
           <View style={category.container}>
@@ -156,12 +253,9 @@ const AddItem = () => {
               return (
                 <TouchableOpacity
                   key={index}
-                  onPress={() =>
-                    handleChange("categoryId", item.id)
-                  }
-                  style={[category.item, { backgroundColor: bgColor }]}
-                >
-                  <Text style={[category.name, { color: color }]}>
+                  onPress={() => handleChange('categoryId', item.id)}
+                  style={[category.item, {backgroundColor: bgColor}]}>
+                  <Text style={[category.name, {color: color}]}>
                     {item.category}
                   </Text>
                 </TouchableOpacity>
@@ -176,15 +270,6 @@ const AddItem = () => {
             onChangeText={text => handleChange('productDescription', text)}
             placeholderTextColor={colors.gray(0.6)}
             multiline
-            style={textInput.content}
-          />
-        </View>
-        <View style={[textInput.borderDashed]}>
-          <TextInput
-            placeholder="Image"
-            value={itemData.image}
-            onChangeText={text => handleChange('image', text)}
-            placeholderTextColor={colors.gray(0.6)}
             style={textInput.content}
           />
         </View>
@@ -323,12 +408,12 @@ const textInput = StyleSheet.create({
 const category = StyleSheet.create({
   title: {
     fontSize: 12,
-    fontFamily: fontType["Pjs-Regular"],
+    fontFamily: fontType['Pjs-Regular'],
     color: colors.gray(0.6),
   },
   container: {
-    flexWrap: "wrap",
-    flexDirection: "row",
+    flexWrap: 'wrap',
+    flexDirection: 'row',
     gap: 10,
     marginTop: 10,
   },
@@ -339,6 +424,6 @@ const category = StyleSheet.create({
   },
   name: {
     fontSize: 10,
-    fontFamily: fontType["Pjs-Medium"],
+    fontFamily: fontType['Pjs-Medium'],
   },
 });
