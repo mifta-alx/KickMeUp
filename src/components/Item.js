@@ -3,7 +3,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image,
   Dimensions,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -15,13 +14,14 @@ import { brandData } from '../../data';
 
 const windowWidth = Dimensions.get('window').width;
 
-const Item = ({itemdata, variant, onPress, navigate}) => {
+const Item = ({itemdata, variant, navigate}) => {  
+
   const brand = brandData.find(data => data.id === itemdata?.brandId)
   return (
     <TouchableOpacity style={item.card} onPress={navigate} activeOpacity={0.8}>
-      <TouchableOpacity onPress={onPress} style={item.wishlist}>
+      <View style={item.wishlist}>
         <Heart variant={variant} size={20} color={colors.black()} />
-      </TouchableOpacity>
+      </View>
       <FastImage
             style={item.image} 
             source={{
@@ -34,7 +34,7 @@ const Item = ({itemdata, variant, onPress, navigate}) => {
       <View style={item.info}>
         <View style={item.textContainer}>
           <Text style={item.brand}>{brand.brand_name}</Text>
-          <Text style={item.type}>{itemdata.productName}</Text>
+          <Text style={item.type}>{itemdata?.productName}</Text>
         </View>
         <Text style={item.price}>IDR {formatPrice(itemdata?.price)}</Text>
       </View>

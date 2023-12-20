@@ -9,20 +9,13 @@ import Item from './Item';
 const ListItem = ({data, layoutType, type}) => {
   const navigation = useNavigation()
   const [wishlist, setWishlist] = useState([]);
-  const toggleWishlist = itemId => {
-    if (wishlist.includes(itemId)) {
-      setWishlist(wishlist.filter(id => id !== itemId));
-    } else {
-      setWishlist([...wishlist, itemId]);
-    }
-  };
+
   const renderItem = ({item}) => {
     variant = wishlist.includes(item.id) ? 'Bold' : 'Linear';
     return (
       <Item
         variant={variant}
         itemdata={item}
-        onPress={() => toggleWishlist(item.id)}
         navigate={() => navigation.navigate('ItemDetail', {itemId : item.id, type })}
       />
     );

@@ -18,6 +18,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import FastImage from 'react-native-fast-image';
+import auth from '@react-native-firebase/auth';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -26,6 +27,7 @@ const ItemDetail = ({route}) => {
   const navigation = useNavigation();
   const [itemData, setItemData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isWishlist, setIsWishlist] = useState(false)
 
   const actionSheetRef = useRef(null);
 
@@ -38,20 +40,40 @@ const ItemDetail = ({route}) => {
   };
 
   useEffect(() => {
-    const subscriber = firestore()
-      .collection('products')
-      .doc(itemId)
-      .onSnapshot(documentSnapshot => {
-        const product = documentSnapshot.data();
-        if (product) {
-          setItemData(product);
+    const fetchProductData = async () => {
+      try {
+        const productSnapshot = await firestore()
+          .collection('products')
+          .doc(itemId)
+          .get();
+  
+        const productData = productSnapshot.data();
+  
+        if (productData) {
+          setItemData(productData);
+
+          const userId = auth().currentUser.uid;
+          const wishlistRef = firestore()
+            .collection('userWishlist')
+            .doc(userId)
+            .collection('wishlist')
+            .doc(itemId);
+  
+          const isWishlist = (await wishlistRef.get()).exists;
+          setIsWishlist(isWishlist);
         } else {
           console.log(`Product with ID ${itemId} not found.`);
         }
-      });
-    setLoading(false);
-    return () => subscriber();
+      } catch (error) {
+        console.error('Error fetching product data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchProductData();
   }, [itemId]);
+  
   const navigateEdit = () => {
     closeActionSheet();
     navigation.navigate('EditItem', {itemId});
@@ -79,7 +101,34 @@ const ItemDetail = ({route}) => {
       console.error(error);
     }
   };
-
+  const toggleWishlist = async () => {
+    const userId = auth().currentUser.uid;
+    try {
+      const wishlistRef = firestore()
+        .collection('userWishlist')
+        .doc(userId)
+        .collection('wishlist')
+        .doc(itemId);
+  
+      const isWishlist = (await wishlistRef.get()).exists;
+  
+      if (isWishlist) {
+        // Hapus dari daftar favorit jika sudah ada
+        await wishlistRef.delete();
+      } else {
+        // Tambahkan ke daftar favorit jika belum ada
+        await wishlistRef.set({
+          productId: itemId,
+          timestamp: firestore.FieldValue.serverTimestamp(),
+        });
+      }
+  
+      setIsWishlist(!isWishlist); 
+    } catch (error) {
+      console.error('Error updating favorite status:', error);
+    }
+  };
+  
   const brand = brandData.find(data => data.id === itemData?.brandId);
   return (
     <View style={styles.container}>
@@ -131,7 +180,9 @@ const ItemDetail = ({route}) => {
               </TouchableOpacity>
               <View style={{flexDirection: 'row', gap: 20}}>
                 <Share variant="Linear" color={colors.black()} size={24} />
-                <Heart variant="Linear" color={colors.black()} size={24} />
+                <TouchableOpacity activeOpacity={0.8} onPress={toggleWishlist}>
+                <Heart variant={isWishlist ? "Bold" : "Linear"} color={colors.black()} size={24} />
+                </TouchableOpacity>
               </View>
             </View>
             <View style={{gap: 8}}>
@@ -153,10 +204,14 @@ const ItemDetail = ({route}) => {
             </View>
             <ListSize />
           </View>
+          {
+            itemData.productDescription && (
           <View style={{paddingVertical: 10, gap: 10, paddingHorizontal: 24}}>
             <Text style={styles.title}>Product Description</Text>
             <Text style={item.description}>{itemData?.productDescription}</Text>
           </View>
+            )
+          }
           <View
             style={{
               flexDirection: 'row',

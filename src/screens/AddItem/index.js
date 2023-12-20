@@ -9,7 +9,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import {ArrowLeft, Add, Image as ImageIcon} from 'iconsax-react-native';
+import {ArrowLeft2, Add, Image as ImageIcon} from 'iconsax-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {fontType, colors} from '../../theme';
 import {brandData, categoryItem} from '../../../data';
@@ -17,6 +17,7 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import ImagePicker from 'react-native-image-crop-picker';
 import FastImage from 'react-native-fast-image';
+import auth from '@react-native-firebase/auth';
 
 const AddItem = () => {
   const navigation = useNavigation();
@@ -73,7 +74,7 @@ const AddItem = () => {
     const extension = filename.split('.').pop();
     filename = `${productName}_${Date.now()}.${extension}`;
     const reference = storage().ref(`productImages/${filename}`);
-
+    const userId = auth().currentUser.uid;
     setLoading(true);
     try {
       await reference.putFile(itemData.image);
@@ -81,6 +82,7 @@ const AddItem = () => {
       await firestore()
         .collection('products')
         .add({
+          userId,
           brandId: itemData.brandId,
           productName: itemData.productName,
           productDescription: itemData.productDescription,
@@ -103,13 +105,13 @@ const AddItem = () => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft color={colors.black()} variant="Linear" size={24} />
+      <View style={header.container}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          activeOpacity={0.6}>
+          <ArrowLeft2 variant="Linear" color={colors.black()} size={24} />
         </TouchableOpacity>
-        <View style={{flex: 1, alignItems: 'center'}}>
-          <Text style={styles.title}>Add Product</Text>
-        </View>
+        <Text style={header.title}>Add Item</Text>
       </View>
       <ScrollView
         contentContainerStyle={{
@@ -425,5 +427,30 @@ const category = StyleSheet.create({
   name: {
     fontSize: 10,
     fontFamily: fontType['Pjs-Medium'],
+  },
+});
+const header = StyleSheet.create({
+  stickycontainer: {
+    flexDirection: 'column',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    backgroundColor: colors.white(),
+    zIndex: 99,
+  },
+  container: {
+    flexDirection: 'row',
+    height: 64,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    fontFamily: fontType['Pjs-Bold'],
+    fontSize: 18,
+    color: colors.black(),
+    flex:1, 
+    textAlign:'center'
   },
 });

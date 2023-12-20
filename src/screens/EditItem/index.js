@@ -9,7 +9,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import {ArrowLeft, Add, Image as ImageIcon} from 'iconsax-react-native';
+import {ArrowLeft2, Add, Image as ImageIcon} from 'iconsax-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {fontType, colors} from '../../theme';
 import {brandData, categoryItem} from '../../../data';
@@ -135,13 +135,13 @@ const EditItem = ({route}) => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft color={colors.black()} variant="Linear" size={24} />
+      <View style={header.container}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          activeOpacity={0.6}>
+          <ArrowLeft2 variant="Linear" color={colors.black()} size={24} />
         </TouchableOpacity>
-        <View style={{flex: 1, alignItems: 'center'}}>
-          <Text style={styles.title}>Edit Product</Text>
-        </View>
+        <Text style={header.title}>Edit Item</Text>
       </View>
       <ScrollView
         contentContainerStyle={{
@@ -457,5 +457,30 @@ const category = StyleSheet.create({
   name: {
     fontSize: 10,
     fontFamily: fontType['Pjs-Medium'],
+  },
+});
+const header = StyleSheet.create({
+  stickycontainer: {
+    flexDirection: 'column',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    backgroundColor: colors.white(),
+    zIndex: 99,
+  },
+  container: {
+    flexDirection: 'row',
+    height: 64,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    fontFamily: fontType['Pjs-Bold'],
+    fontSize: 18,
+    color: colors.black(),
+    flex:1, 
+    textAlign:'center'
   },
 });

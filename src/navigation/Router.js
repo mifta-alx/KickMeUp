@@ -11,7 +11,9 @@ import {
   ByCategory,
   AddItem,
   MyProducts,
-  EditItem
+  EditItem,
+  Login, 
+  Register
 } from '../screens';
 import {Heart, Home, ProfileCircle, Shop} from 'iconsax-react-native';
 
@@ -159,6 +161,30 @@ const Router = () => {
       <Stack.Screen
         name="MyProducts"
         component={MyProducts}
+        options={{
+          headerShown: false, 
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection : 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          headerShown: false, 
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection : 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
         options={{
           headerShown: false, 
           animationEnabled: true,

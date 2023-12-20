@@ -11,26 +11,37 @@ import {ArrowLeft2, AddCircle, Box} from 'iconsax-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {ListItem} from '../../components';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const MyProducts = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [myProduct, setMyProduct] = useState([]);
   useEffect(() => {
-    const subscriber = firestore()
-      .collection('products')
-      .onSnapshot(querySnapshot => {
-        const products = [];
-        querySnapshot.forEach(documentSnapshot => {
-          products.push({
-            ...documentSnapshot.data(),
-            id: documentSnapshot.id,
+    const user = auth().currentUser;
+    const fetchProduct = () => {
+      try {
+        if (user) {
+          const userId = user.uid;
+          const query = firestore().collection('products').where('userId', '==', userId);
+          const unsubscribeProduct = query.onSnapshot(querySnapshot => {
+            const products = querySnapshot.docs.map(doc => ({
+              ...doc.data(),
+              id: doc.id,
+            }));
+            setMyProduct(products);
+            setLoading(false);
           });
-        });
-        setMyProduct(products);
-        setLoading(false);
-      });
-    return () => subscriber();
+
+          return () => {
+            unsubscribeProduct();
+          };
+        }
+      } catch (error) {
+        console.error('Error fetching product data:', error);
+      }
+    }
+    fetchProduct()
   }, []);
   return (
     <View style={styles.container}>
@@ -52,7 +63,7 @@ const MyProducts = () => {
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
           <ActivityIndicator size={'large'} color={colors.black()} />
         </View>
-      ) : myProduct ? (
+      ) : myProduct && myProduct.length > 0 ? (
         <ListItem data={myProduct} layoutType="vertical" type="auth"/>
       ) : (
         <View
