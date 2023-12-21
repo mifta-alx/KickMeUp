@@ -7,9 +7,9 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {colors, fontType} from '../../theme';
-import {Bag2, ArrowLeft2, Share, Heart, More} from 'iconsax-react-native';
+import {Bag2, ArrowLeft2, Share, Heart, More, Bag} from 'iconsax-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {brandData} from '../../../data';
 import {formatPrice} from '../../utils/formatPrice';
@@ -19,6 +19,7 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import FastImage from 'react-native-fast-image';
 import auth from '@react-native-firebase/auth';
+import {useFocusEffect} from '@react-navigation/native';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -27,9 +28,11 @@ const ItemDetail = ({route}) => {
   const navigation = useNavigation();
   const [itemData, setItemData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isWishlist, setIsWishlist] = useState(false)
+  const [isWishlist, setIsWishlist] = useState(false);
+  const [itemAmount, setItemAmount] = useState(0);
 
   const actionSheetRef = useRef(null);
+  const userId = auth().currentUser.uid;
 
   const openActionSheet = () => {
     actionSheetRef.current?.show();
@@ -39,45 +42,84 @@ const ItemDetail = ({route}) => {
     actionSheetRef.current?.hide();
   };
 
-  useEffect(() => {
-    const fetchProductData = async () => {
-      try {
-        const productSnapshot = await firestore()
-          .collection('products')
-          .doc(itemId)
-          .get();
-  
-        const productData = productSnapshot.data();
-  
-        if (productData) {
-          setItemData(productData);
+  const fetchProductData = async () => {
+    try {
+      const productSnapshot = await firestore()
+        .collection('products')
+        .doc(itemId)
+        .get();
 
-          const userId = auth().currentUser.uid;
-          const wishlistRef = firestore()
-            .collection('userWishlist')
-            .doc(userId)
-            .collection('wishlist')
-            .doc(itemId);
-  
-          const isWishlist = (await wishlistRef.get()).exists;
-          setIsWishlist(isWishlist);
-        } else {
-          console.log(`Product with ID ${itemId} not found.`);
-        }
-      } catch (error) {
-        console.error('Error fetching product data:', error);
-      } finally {
-        setLoading(false);
+      const productData = productSnapshot.data();
+      if (productData) {
+        setItemData(productData);
+
+        const wishlistRef = firestore()
+          .collection('userData')
+          .doc(userId)
+          .collection('wishlist')
+          .doc(itemId);
+
+        const isWishlist = (await wishlistRef.get()).exists;
+        setIsWishlist(isWishlist);
+      } else {
+        console.log(`Product with ID ${itemId} not found.`);
       }
-    };
-  
-    fetchProductData();
-  }, [itemId]);
-  
+    } catch (error) {
+      console.error('Error fetching product data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  // const fetchCartData = async () => {
+  //   try {
+  //     const cartRef = firestore()
+  //       .collection('userData')
+  //       .doc(userId)
+  //       .collection('cart')
+  //       .onSnapshot(querySnapshot => {
+  //         const cartData = [];
+  //         querySnapshot.forEach(documentSnapshot => {
+  //           cartData.push({
+  //             ...documentSnapshot.data(),
+  //             id: documentSnapshot.id,
+  //           });
+  //         });
+  //         setItemAmount(cartRef.size);
+  //       });
+  //   } catch (error) {
+  //     console.error('Error fetching cart data:', error);
+  //   }
+  // };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchProductData();
+      // fetchCartData();
+    }, []),
+  );
+  useEffect(() => {
+    const cartRef = firestore()
+      .collection('userData')
+      .doc(userId)
+      .collection('cart')
+      .onSnapshot(querySnapshot => {
+        const cartData = [];
+        querySnapshot.forEach(documentSnapshot => {
+          cartData.push({
+            ...documentSnapshot.data(),
+            id: documentSnapshot.id,
+          });
+        });
+        setItemAmount(cartData.length);
+      });
+    return () => cartRef();
+  }, []);
+
   const navigateEdit = () => {
     closeActionSheet();
     navigation.navigate('EditItem', {itemId});
   };
+
   const handleDelete = async () => {
     setLoading(true);
     try {
@@ -95,23 +137,24 @@ const ItemDetail = ({route}) => {
       console.log('Product deleted!');
       closeActionSheet();
       setItemData(null);
-      setLoading(false)
+      setLoading(false);
       navigation.navigate('MyProducts');
     } catch (error) {
       console.error(error);
     }
   };
+
   const toggleWishlist = async () => {
     const userId = auth().currentUser.uid;
     try {
       const wishlistRef = firestore()
-        .collection('userWishlist')
+        .collection('userData')
         .doc(userId)
         .collection('wishlist')
         .doc(itemId);
-  
+
       const isWishlist = (await wishlistRef.get()).exists;
-  
+
       if (isWishlist) {
         // Hapus dari daftar favorit jika sudah ada
         await wishlistRef.delete();
@@ -122,13 +165,39 @@ const ItemDetail = ({route}) => {
           timestamp: firestore.FieldValue.serverTimestamp(),
         });
       }
-  
-      setIsWishlist(!isWishlist); 
+
+      setIsWishlist(!isWishlist);
     } catch (error) {
       console.error('Error updating favorite status:', error);
     }
   };
-  
+  const toggleAddtoCart = async () => {
+    const userId = auth().currentUser.uid;
+    try {
+      const cartRef = firestore()
+        .collection('userData')
+        .doc(userId)
+        .collection('cart')
+        .doc(itemId);
+
+      const isExist = (await cartRef.get()).exists;
+      if (isExist) {
+        await cartRef.update({
+          amount: firestore.FieldValue.increment(1),
+          timestamp: firestore.FieldValue.serverTimestamp(),
+        });
+      } else {
+        await cartRef.set({
+          productId: itemId,
+          size: 2,
+          amount: 1,
+          timestamp: firestore.FieldValue.serverTimestamp(),
+        });
+      }
+    } catch (error) {
+      console.error('Error add to cart status:', error);
+    }
+  };
   const brand = brandData.find(data => data.id === itemData?.brandId);
   return (
     <View style={styles.container}>
@@ -150,6 +219,31 @@ const ItemDetail = ({route}) => {
           </TouchableOpacity>
         ) : (
           <TouchableOpacity onPress={() => {}} activeOpacity={0.6}>
+            {itemAmount > 0 && (
+              <View
+                style={{
+                  backgroundColor: colors.black(),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 100,
+                  width: 18,
+                  height: 18,
+                  position: 'absolute',
+                  zIndex: 100,
+                  right: -6,
+                  top: -3,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    color: colors.white(),
+                    fontFamily: fontType['Pjs-Medium'],
+                    lineHeight: 12,
+                  }}>
+                  {itemAmount}
+                </Text>
+              </View>
+            )}
             <Bag2 variant="Linear" color={colors.black()} size={24} />
           </TouchableOpacity>
         )}
@@ -174,20 +268,28 @@ const ItemDetail = ({route}) => {
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() =>
-                  navigation.navigate('ByCategory', {brandId: itemData.brandId})
+                  navigation.navigate('ByCategory', {
+                    brandId: itemData.brandId,
+                  })
                 }>
                 <Text style={item.brand}>{brand?.brand_name}</Text>
               </TouchableOpacity>
               <View style={{flexDirection: 'row', gap: 20}}>
                 <Share variant="Linear" color={colors.black()} size={24} />
                 <TouchableOpacity activeOpacity={0.8} onPress={toggleWishlist}>
-                <Heart variant={isWishlist ? "Bold" : "Linear"} color={colors.black()} size={24} />
+                  <Heart
+                    variant={isWishlist ? 'Bold' : 'Linear'}
+                    color={colors.black()}
+                    size={24}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
             <View style={{gap: 8}}>
               <Text style={item.type}>{itemData?.productName}</Text>
-              <Text style={item.price}>IDR {itemData?.price ? formatPrice(itemData.price) : 'N/A'}</Text>
+              <Text style={item.price}>
+                IDR {itemData?.price ? formatPrice(itemData.price) : 'N/A'}
+              </Text>
             </View>
           </View>
           <View style={{gap: 12}}>
@@ -204,14 +306,16 @@ const ItemDetail = ({route}) => {
             </View>
             <ListSize />
           </View>
-          {
-            itemData.productDescription && (
           <View style={{paddingVertical: 10, gap: 10, paddingHorizontal: 24}}>
-            <Text style={styles.title}>Product Description</Text>
-            <Text style={item.description}>{itemData?.productDescription}</Text>
+            {itemData.productDescription && (
+              <>
+                <Text style={item.description}>
+                  {itemData?.productDescription}
+                </Text>
+                <Text style={styles.title}>Product Description</Text>
+              </>
+            )}
           </View>
-            )
-          }
           <View
             style={{
               flexDirection: 'row',
@@ -233,12 +337,25 @@ const ItemDetail = ({route}) => {
                 {itemData?.attributes.releaseDate}
               </Text>
               <Text style={item.description}>
-                {itemData?.attributes.retailPrice ? formatPrice(itemData.attributes.retailPrice) : 'N/A'}
+                {itemData?.attributes.retailPrice
+                  ? formatPrice(itemData.attributes.retailPrice)
+                  : 'N/A'}
               </Text>
             </View>
           </View>
         </ScrollView>
       )}
+      <View style={bottomBar.bar}>
+        <TouchableOpacity
+          style={bottomBar.btnWhite}
+          activeOpacity={0.8}
+          onPress={toggleAddtoCart}>
+          <Bag2 variant="Bold" size={24} color={colors.black()} />
+        </TouchableOpacity>
+        <TouchableOpacity style={bottomBar.btnBlack} activeOpacity={0.8}>
+          <Text style={bottomBar.text}>Buy Now</Text>
+        </TouchableOpacity>
+      </View>
       <ActionSheet
         ref={actionSheetRef}
         containerStyle={{
@@ -357,5 +474,38 @@ const item = StyleSheet.create({
     fontSize: 12,
     color: colors.midGray(),
     textAlign: 'justify',
+  },
+});
+const bottomBar = StyleSheet.create({
+  bar: {
+    paddingHorizontal: 24,
+    paddingVertical: 10,
+    flexDirection: 'row',
+    gap: 20,
+    borderTopWidth: 1,
+    borderTopColor: colors.extraLightGray(),
+    backgroundColor: colors.white(),
+  },
+  btnWhite: {
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.extraLightGray(),
+    borderRadius: 10,
+    backgroundColor: colors.white(),
+  },
+  btnBlack: {
+    backgroundColor: colors.black(),
+    borderRadius: 10,
+    paddingVertical: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    color: colors.white(),
+    fontSize: 14,
+    fontFamily: fontType['Pjs-SemiBold'],
   },
 });

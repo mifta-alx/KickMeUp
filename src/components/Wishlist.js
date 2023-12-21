@@ -13,10 +13,12 @@ import {colors, fontType} from '../theme';
 import {formatPrice} from '../utils/formatPrice';
 import FastImage from 'react-native-fast-image';
 import {brandData} from '../../data';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const windowWidth = Dimensions.get('window').width;
 
-const Item = ({itemdata}) => {
+const Item = ({itemdata, onPress}) => {
   const [BtnColor, setBtnColor] = useState(colors.black());
   const brand = brandData.find(data => data.id === itemdata?.brandId);
   return (
@@ -44,7 +46,8 @@ const Item = ({itemdata}) => {
             style={item.button}
             underlayColor={colors.black()}
             onPressIn={() => setBtnColor(colors.white())}
-            onPressOut={() => setBtnColor(colors.black())}>
+            onPressOut={() => setBtnColor(colors.black())} 
+            onPress={onPress}>
             <Text style={[item.textbutton, {color: BtnColor}]}>
               Add to cart
             </Text>
@@ -55,9 +58,37 @@ const Item = ({itemdata}) => {
   );
 };
 
+const toggleAddtoCart = async (itemId) => {
+  const userId = auth().currentUser.uid;
+  try {
+    const cartRef = firestore()
+      .collection('userData')
+      .doc(userId)
+      .collection('cart')
+      .doc(itemId);
+
+    const isExist = (await cartRef.get()).exists;
+    if (isExist) {
+      await cartRef.update({
+        amount: firestore.FieldValue.increment(1),
+        timestamp: firestore.FieldValue.serverTimestamp(),
+      });
+    } else {
+      await cartRef.set({
+        productId: itemId,
+        size: 2,
+        amount: 1,
+        timestamp: firestore.FieldValue.serverTimestamp(),
+      });
+    }
+  } catch (error) {
+    console.error('Error add to cart status:', error);
+  }
+};
+
 const Wishlist = ({data}) => {
   const renderItem = ({item}) => {
-    return <Item itemdata={item} />;
+    return <Item itemdata={item} onPress={() => toggleAddtoCart(item.productId)} />;
   };
   return (
     <FlatList

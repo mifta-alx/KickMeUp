@@ -1,37 +1,58 @@
-import {
-  FlatList,
-  StyleSheet,
-} from 'react-native';
-import React, {useState} from 'react';
-import { useNavigation } from '@react-navigation/native';
+import {FlatList, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import Item from './Item';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
-const ListItem = ({data, layoutType, type}) => {
-  const navigation = useNavigation()
+const ListItem = ({data, layoutType, type, variant}) => {
+  const userId = auth().currentUser?.uid;
   const [wishlist, setWishlist] = useState([]);
+  const navigation = useNavigation();
+  useEffect(() => {
+    const wishlistSubscriber = firestore()
+      .collection('userData')
+      .doc(userId)
+      .collection('wishlist')
+      .onSnapshot(async querySnapshot => {
+        const wishlistData = [];
+        querySnapshot.forEach(documentSnapshot => {
+          wishlistData.push({
+            ...documentSnapshot.data(),
+            id: documentSnapshot.id,
+          });
+        });
+        setWishlist(wishlistData);
+      });
 
+    return () => wishlistSubscriber;
+  }, [userId]);
   const renderItem = ({item}) => {
-    variant = wishlist.includes(item.id) ? 'Bold' : 'Linear';
+    const isWishlistItem = wishlist.some(data => data?.productId === item?.id);
+    const variant = isWishlistItem ? 'Bold' : 'Linear';
     return (
       <Item
         variant={variant}
         itemdata={item}
-        navigate={() => navigation.navigate('ItemDetail', {itemId : item.id, type })}
+        navigate={() =>
+          navigation.navigate('ItemDetail', {itemId: item.id, type})
+        }
       />
     );
   };
-  if(layoutType == 'vertical'){
+  if (layoutType == 'vertical') {
     return (
       <FlatList
-      data={data}
-      keyExtractor={item => item.id}
-      renderItem={item => renderItem({...item})}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.container}
-      numColumns={2}
-      columnWrapperStyle={{justifyContent: 'space-between'}}/>
-    )
-  }else{
+        data={data}
+        keyExtractor={item => item.id}
+        renderItem={item => renderItem({...item})}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.container}
+        numColumns={2}
+        columnWrapperStyle={{justifyContent: 'space-between'}}
+      />
+    );
+  } else {
     return (
       <FlatList
         data={data}
@@ -41,7 +62,7 @@ const ListItem = ({data, layoutType, type}) => {
         contentContainerStyle={styles.container}
         horizontal
       />
-    )
+    );
   }
 };
 
