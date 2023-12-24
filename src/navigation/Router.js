@@ -13,7 +13,8 @@ import {
   MyProducts,
   EditItem,
   Login, 
-  Register
+  Register,
+  Cart
 } from '../screens';
 import {Heart, Home, ProfileCircle, Shop} from 'iconsax-react-native';
 
@@ -185,6 +186,19 @@ const Router = () => {
       <Stack.Screen
         name="Register"
         component={Register}
+        options={{
+          headerShown: false, 
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection : 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+
+<Stack.Screen
+        name="Cart"
+        component={Cart}
         options={{
           headerShown: false, 
           animationEnabled: true,
