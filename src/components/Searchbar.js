@@ -4,12 +4,14 @@ import {SearchNormal1, Notification, Bag2} from 'iconsax-react-native';
 import {colors, fontType} from '../theme';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
 const Searchbar = () => {
   const [itemAmount, setItemAmount] = useState(0);
+  const navigation = useNavigation()
   const userId = auth().currentUser?.uid;
   useEffect(() => {
-    const cartRef = firestore()
+    const cartSubscriber = firestore()
       .collection('userData')
       .doc(userId)
       .collection('cart')
@@ -23,8 +25,8 @@ const Searchbar = () => {
         });
         setItemAmount(cartData.length);
       });
-    return () => cartRef();
-  });
+    return () => cartSubscriber();
+  }, []);
   return (
     <View style={header.container}>
       <View style={searchBar.container}>
@@ -32,7 +34,7 @@ const Searchbar = () => {
         <Text style={searchBar.text}>Search</Text>
       </View>
       <Notification variant="Linear" color={colors.black()} size={24} />
-      <TouchableOpacity onPress={() => {}} activeOpacity={0.6}>
+      <TouchableOpacity onPress={() => navigation.navigate('Cart')} activeOpacity={0.6}>
         {itemAmount > 0 && (
           <View
             style={{

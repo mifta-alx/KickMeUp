@@ -53,7 +53,8 @@ const WishlistScreen = () => {
     const cartSubscriber = firestore()
       .collection('userData')
       .doc(userId)
-      .collection('cart').onSnapshot(querySnapshot => {
+      .collection('cart')
+      .onSnapshot(querySnapshot => {
         const cartData = [];
         querySnapshot.forEach(documentSnapshot => {
           cartData.push({

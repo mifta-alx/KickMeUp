@@ -9,4 +9,5 @@ import EditItem from "./EditItem";
 import MyProducts from "./MyProducts";
 import Login from "./Login";
 import Register from "./Register";
-export {HomeScreen, ProfileScreen, MarketScreen, WishlistScreen, ItemDetail, ByCategory, AddItem, EditItem, MyProducts, Login, Register};
+import Cart from "./Cart";
+export {HomeScreen, ProfileScreen, MarketScreen, WishlistScreen, ItemDetail, ByCategory, AddItem, EditItem, MyProducts, Login, Register, Cart};

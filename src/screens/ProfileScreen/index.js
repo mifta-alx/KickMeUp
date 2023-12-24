@@ -146,7 +146,7 @@ const ProfileScreen = () => {
       await auth().signOut();
       await AsyncStorage.removeItem('userData');
       setAuthorized(false);
-      navigation.navigate('Home');
+      navigation.replace('MainApp');
     } catch (error) {
       console.error(error);
     }

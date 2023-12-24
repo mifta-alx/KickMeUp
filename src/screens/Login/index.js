@@ -38,7 +38,7 @@ const Login = () => {
       };
       await AsyncStorage.setItem('userData', JSON.stringify(dataToStore));
       setLoading(false);
-      navigation.navigate('Profile');
+      navigation.replace('MainApp');
     } catch (error) {
       setLoading(false);
       console.log('Login Error:', error.message);
