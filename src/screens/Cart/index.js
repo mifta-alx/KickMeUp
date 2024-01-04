@@ -9,7 +9,14 @@ import {
 } from 'react-native';
 import React, {useEffect, useState, useCallback} from 'react';
 import {colors, fontType} from '../../theme';
-import {Add, ArrowLeft2, Minus, More, TickSquare} from 'iconsax-react-native';
+import {
+  Add,
+  ArrowLeft2,
+  BagCross1,
+  Minus,
+  More,
+  TickSquare,
+} from 'iconsax-react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
@@ -151,7 +158,7 @@ const Cart = () => {
       const selectedItemIndex = selectedItem.findIndex(
         item => item.productId === data.productId,
       );
-  
+
       if (selectedItemIndex !== -1) {
         // Item already selected, remove it
         const selectedAmount = selectedItem[selectedItemIndex].amount;
@@ -176,7 +183,7 @@ const Cart = () => {
     },
     [selectedItem],
   );
-  
+
   const ItemCart = ({data}) => {
     const isSelected = selectedItem.some(
       item => item.productId === data.productId,
@@ -305,8 +312,29 @@ const Cart = () => {
           />
         </TouchableOpacity>
       </View>
-      <ListCart data={cart} />
-      <View style={{paddingHorizontal: 24, paddingVertical: 10, gap: 20}}>
+      {cart.length > 0 ? (
+        <ListCart data={cart} />
+      ) : (
+        <View
+          style={{
+            gap: 12,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+            opacity: 0.3,
+          }}>
+          <BagCross1 variant="Linear" color={colors.midGray()} size={96} />
+          <Text
+            style={{
+              color: colors.midGray(),
+              fontSize: 18,
+              fontFamily: fontType['Pjs-SemiBold'],
+            }}>
+            Cart is empty.
+          </Text>
+        </View>
+      )}
+      {/* <View style={{paddingHorizontal: 24, paddingVertical: 10, gap: 20}}>
         <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
           <Text
             style={{
@@ -342,7 +370,7 @@ const Cart = () => {
             Checkout Now ({total.item})
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };

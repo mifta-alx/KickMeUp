@@ -32,7 +32,7 @@ const ItemDetail = ({route}) => {
   const [itemAmount, setItemAmount] = useState(0);
 
   const actionSheetRef = useRef(null);
-  const userId = auth().currentUser.uid;
+  const userId = auth().currentUser?.uid;
 
   const openActionSheet = () => {
     actionSheetRef.current?.show();
@@ -179,7 +179,6 @@ const ItemDetail = ({route}) => {
         .doc(userId)
         .collection('cart')
         .doc(itemId);
-
       const isExist = (await cartRef.get()).exists;
       if (isExist) {
         await cartRef.update({
@@ -338,7 +337,7 @@ const ItemDetail = ({route}) => {
               </Text>
               <Text style={item.description}>
                 {itemData?.attributes.retailPrice
-                  ? formatPrice(itemData.attributes.retailPrice)
+                  ? `IDR ${formatPrice(itemData.attributes.retailPrice)}`
                   : 'N/A'}
               </Text>
             </View>

@@ -7,17 +7,18 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {colors, fontType} from '../../theme';
-import {Bag2, Notification} from 'iconsax-react-native';
+import {Bag2, HeartSlash, Notification} from 'iconsax-react-native';
 import {Wishlist} from '../../components';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
 const WishlistScreen = () => {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [itemData, setItemData] = useState([]);
   const [itemAmount, settemAmount] = useState(0);
-
+  const navigation = useNavigation();
   const userId = auth().currentUser?.uid;
 
   useEffect(() => {
@@ -75,7 +76,7 @@ const WishlistScreen = () => {
         <Text style={header.title}>Wishlist ({wishlist.length})</Text>
         <View style={{flexDirection: 'row', gap: 16, alignItems: 'center'}}>
           <Notification variant="Linear" color={colors.black()} size={24} />
-          <TouchableOpacity onPress={() => {}} activeOpacity={0.6}>
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')} activeOpacity={0.6}>
             {itemAmount > 0 && (
               <View
                 style={{
@@ -109,8 +110,27 @@ const WishlistScreen = () => {
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
           <ActivityIndicator size={'large'} color={colors.black()} />
         </View>
-      ) : (
+      ) : wishlist.length > 0 ? (
         <Wishlist data={itemData} />
+      ) : (
+        <View
+          style={{
+            gap: 12,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+            opacity: 0.3,
+          }}>
+          <HeartSlash variant="Linear" color={colors.midGray()} size={96} />
+          <Text
+            style={{
+              color: colors.midGray(),
+              fontSize: 18,
+              fontFamily: fontType['Pjs-SemiBold'],
+            }}>
+            Wishlist is empty.
+          </Text>
+        </View>
       )}
     </View>
   );
