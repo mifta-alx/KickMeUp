@@ -16,7 +16,7 @@ const windowWidth = Dimensions.get('window').width;
 
 const Item = ({itemdata, variant, navigate}) => {  
 
-  const brand = brandData.find(data => data.id === itemdata?.brandId)
+  const brand = itemdata.brandId && brandData.find(data => data.id === itemdata?.brandId)
   return (
     <TouchableOpacity style={item.card} onPress={navigate} activeOpacity={0.8}>
       <View style={item.wishlist}>

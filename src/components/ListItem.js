@@ -5,7 +5,7 @@ import Item from './Item';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-const ListItem = ({data, layoutType, type, variant}) => {
+const ListItem = ({data, layoutType, type}) => {
   const userId = auth().currentUser?.uid;
   const [wishlist, setWishlist] = useState([]);
   const navigation = useNavigation();
