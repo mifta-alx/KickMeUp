@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   ActivityIndicator,
+  Dimensions
 } from 'react-native';
 import {ArrowLeft2, Add, Image as ImageIcon} from 'iconsax-react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -18,7 +19,7 @@ import firestore from '@react-native-firebase/firestore';
 import ImagePicker from 'react-native-image-crop-picker';
 import FastImage from 'react-native-fast-image';
 import auth from '@react-native-firebase/auth';
-
+const windowWidth = Dimensions.get('window').width
 const AddItem = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
@@ -187,7 +188,7 @@ const AddItem = () => {
             flexDirection: 'row',
             flexWrap: 'wrap',
             rowGap: 20,
-            columnGap: 27,
+            columnGap: windowWidth*0.087,
           }}>
           {brandData.map((data, index) => {
             return (

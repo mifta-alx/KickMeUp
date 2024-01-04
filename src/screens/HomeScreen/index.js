@@ -5,15 +5,49 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Dimensions
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {colors, fontType} from '../../theme';
 import {ListCategory, ListItem, Searchbar} from '../../components';
 import {dataItem, categoryItem, brandData} from '../../../data';
 import {useNavigation} from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
 
+const windowWidth = Dimensions.get('window').width
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const [topSneakers, setTopSneakers] = useState([]);
+  const [topCollaboration, setTopCollaboration] = useState([]);
+  useEffect(() => {
+    const topSneakersSubs = firestore()
+      .collection('products')
+      .orderBy('productName', 'asc')
+      .onSnapshot(querySnapshot => {
+        const products = [];
+        querySnapshot.forEach(documentSnapshot => {
+          products.push({
+            ...documentSnapshot.data(),
+            id: documentSnapshot.id,
+          });
+        });
+        setTopSneakers(products);
+      });
+      const topCollaborationSubs = firestore()
+      .collection('products')
+      .orderBy('price', 'desc')
+      .onSnapshot(querySnapshot => {
+        const products = [];
+        querySnapshot.forEach(documentSnapshot => {
+          products.push({
+            ...documentSnapshot.data(),
+            id: documentSnapshot.id,
+          });
+        });
+        setTopCollaboration(products);
+      });
+    return () => {topCollaborationSubs(), topSneakersSubs()};
+  }, [])
   return (
     <View style={styles.container}>
       <Searchbar />
@@ -32,7 +66,7 @@ const HomeScreen = () => {
               <Text style={section.button}>View All</Text>
             </TouchableOpacity>
           </View>
-          <ListItem data={dataItem.slice(0, 3)} />
+          <ListItem data={topSneakers.slice(0, 5)} />
         </View>
         <View style={{backgroundColor: colors.black()}}>
           <View style={[section.header, {paddingVertical: 14}]}>
@@ -45,7 +79,7 @@ const HomeScreen = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <ListItem data={dataItem} />
+          <ListItem data={topCollaboration.slice(0, 5)} />
         </View>
         <View>
           <View style={section.header}>
@@ -56,7 +90,7 @@ const HomeScreen = () => {
               flexDirection: 'row',
               flexWrap: 'wrap',
               rowGap: 20,
-              columnGap: 27,
+              columnGap: windowWidth*0.087,
               paddingHorizontal: 24,
               paddingVertical: 10,
             }}>
