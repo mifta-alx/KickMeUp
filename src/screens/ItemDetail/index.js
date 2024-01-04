@@ -70,31 +70,10 @@ const ItemDetail = ({route}) => {
       setLoading(false);
     }
   };
-  // const fetchCartData = async () => {
-  //   try {
-  //     const cartRef = firestore()
-  //       .collection('userData')
-  //       .doc(userId)
-  //       .collection('cart')
-  //       .onSnapshot(querySnapshot => {
-  //         const cartData = [];
-  //         querySnapshot.forEach(documentSnapshot => {
-  //           cartData.push({
-  //             ...documentSnapshot.data(),
-  //             id: documentSnapshot.id,
-  //           });
-  //         });
-  //         setItemAmount(cartRef.size);
-  //       });
-  //   } catch (error) {
-  //     console.error('Error fetching cart data:', error);
-  //   }
-  // };
 
   useFocusEffect(
     useCallback(() => {
       fetchProductData();
-      // fetchCartData();
     }, []),
   );
   useEffect(() => {
@@ -217,7 +196,7 @@ const ItemDetail = ({route}) => {
             />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => {}} activeOpacity={0.6}>
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')} activeOpacity={0.6}>
             {itemAmount > 0 && (
               <View
                 style={{
@@ -306,7 +285,7 @@ const ItemDetail = ({route}) => {
             <ListSize />
           </View>
           <View style={{paddingVertical: 10, gap: 10, paddingHorizontal: 24}}>
-            {itemData.productDescription && (
+            {itemData?.productDescription && (
               <>
                 <Text style={item.description}>
                   {itemData?.productDescription}

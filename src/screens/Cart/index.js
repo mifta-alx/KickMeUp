@@ -313,7 +313,47 @@ const Cart = () => {
         </TouchableOpacity>
       </View>
       {cart.length > 0 ? (
-        <ListCart data={cart} />
+        <>
+          <ListCart data={cart} />
+          <View style={{paddingHorizontal: 24, paddingVertical: 10, gap: 20}}>
+            <View
+              style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: colors.midGray(),
+                  fontFamily: fontType['Pjs-Regular'],
+                }}>
+                Total
+              </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: colors.black(),
+                  fontFamily: fontType['Pjs-Bold'],
+                }}>
+                IDR {formatPrice(total.summary)}
+              </Text>
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                backgroundColor: colors.black(),
+                paddingVertical: 16,
+                borderRadius: 10,
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: colors.white(),
+                  fontFamily: fontType['Pjs-Bold'],
+                }}>
+                Checkout Now ({total.item})
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
       ) : (
         <View
           style={{
@@ -334,43 +374,6 @@ const Cart = () => {
           </Text>
         </View>
       )}
-      {/* <View style={{paddingHorizontal: 24, paddingVertical: 10, gap: 20}}>
-        <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: colors.midGray(),
-              fontFamily: fontType['Pjs-Regular'],
-            }}>
-            Total
-          </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              color: colors.black(),
-              fontFamily: fontType['Pjs-Bold'],
-            }}>
-            IDR {formatPrice(total.summary)}
-          </Text>
-        </View>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={{
-            backgroundColor: colors.black(),
-            paddingVertical: 16,
-            borderRadius: 10,
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              fontSize: 14,
-              color: colors.white(),
-              fontFamily: fontType['Pjs-Bold'],
-            }}>
-            Checkout Now ({total.item})
-          </Text>
-        </TouchableOpacity>
-      </View> */}
     </View>
   );
 };
