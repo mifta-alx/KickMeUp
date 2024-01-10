@@ -337,6 +337,7 @@ const Cart = () => {
             </View>
             <TouchableOpacity
               activeOpacity={0.8}
+              onPress={()=>navigation.navigate('Summary', {cart, selectedItem, total})}
               style={{
                 backgroundColor: colors.black(),
                 paddingVertical: 16,

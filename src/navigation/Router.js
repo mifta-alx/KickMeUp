@@ -16,6 +16,7 @@ import {
   Register,
   Cart,
   Notification,
+  Summary
 } from '../screens';
 import {Heart, Home, ProfileCircle, Shop} from 'iconsax-react-native';
 
@@ -212,6 +213,18 @@ const Router = () => {
       <Stack.Screen
         name="Notification"
         component={Notification}
+        options={{
+          headerShown: false,
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection: 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name="Summary"
+        component={Summary}
         options={{
           headerShown: false,
           animationEnabled: true,
