@@ -10,4 +10,5 @@ import MyProducts from "./MyProducts";
 import Login from "./Login";
 import Register from "./Register";
 import Cart from "./Cart";
-export {HomeScreen, ProfileScreen, MarketScreen, WishlistScreen, ItemDetail, ByCategory, AddItem, EditItem, MyProducts, Login, Register, Cart};
+import Notification from "./Notification";
+export {HomeScreen, ProfileScreen, MarketScreen, WishlistScreen, ItemDetail, ByCategory, AddItem, EditItem, MyProducts, Login, Register, Cart, Notification};

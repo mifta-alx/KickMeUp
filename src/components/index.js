@@ -4,4 +4,5 @@ import Searchbar from "./Searchbar";
 import Wishlist from "./Wishlist";
 import ListSize from "./ListSize";
 import Item from "./Item";
-export {ListItem, ListCategory, Searchbar, Wishlist, ListSize, Item}
+import ItemNotification from "./ItemNotification";
+export {ListItem, ListCategory, Searchbar, Wishlist, ListSize, Item, ItemNotification}

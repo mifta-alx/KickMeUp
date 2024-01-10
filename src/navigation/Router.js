@@ -12,9 +12,10 @@ import {
   AddItem,
   MyProducts,
   EditItem,
-  Login, 
+  Login,
   Register,
-  Cart
+  Cart,
+  Notification,
 } from '../screens';
 import {Heart, Home, ProfileCircle, Shop} from 'iconsax-react-native';
 
@@ -106,7 +107,7 @@ function MainApp() {
 const Router = () => {
   return (
     <Stack.Navigator>
-        <Stack.Screen
+      <Stack.Screen
         name="MainApp"
         component={MainApp}
         options={{headerShown: false}}
@@ -115,23 +116,23 @@ const Router = () => {
         name="ItemDetail"
         component={ItemDetail}
         options={{
-          headerShown: false, 
+          headerShown: false,
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,
-          gestureDirection : 'horizontal',
+          gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
-        />
+      />
       <Stack.Screen
         name="ByCategory"
         component={ByCategory}
         options={{
-          headerShown: false, 
+          headerShown: false,
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,
-          gestureDirection : 'horizontal',
+          gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />
@@ -139,11 +140,11 @@ const Router = () => {
         name="AddItem"
         component={AddItem}
         options={{
-          headerShown: false, 
+          headerShown: false,
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,
-          gestureDirection : 'horizontal',
+          gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />
@@ -151,11 +152,11 @@ const Router = () => {
         name="EditItem"
         component={EditItem}
         options={{
-          headerShown: false, 
+          headerShown: false,
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,
-          gestureDirection : 'horizontal',
+          gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />
@@ -163,11 +164,11 @@ const Router = () => {
         name="MyProducts"
         component={MyProducts}
         options={{
-          headerShown: false, 
+          headerShown: false,
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,
-          gestureDirection : 'horizontal',
+          gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />
@@ -175,11 +176,11 @@ const Router = () => {
         name="Login"
         component={Login}
         options={{
-          headerShown: false, 
+          headerShown: false,
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,
-          gestureDirection : 'horizontal',
+          gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />
@@ -187,24 +188,36 @@ const Router = () => {
         name="Register"
         component={Register}
         options={{
-          headerShown: false, 
+          headerShown: false,
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,
-          gestureDirection : 'horizontal',
+          gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="Cart"
         component={Cart}
         options={{
-          headerShown: false, 
+          headerShown: false,
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,
-          gestureDirection : 'horizontal',
+          gestureDirection: 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name="Notification"
+        component={Notification}
+        options={{
+          headerShown: false,
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />
