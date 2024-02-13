@@ -15,14 +15,15 @@ import FastImage from 'react-native-fast-image';
 import {brandData} from '../../data';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 
-const Item = ({itemdata, onPress}) => {
+const Item = ({itemdata, onPress, navigate}) => {
   const [BtnColor, setBtnColor] = useState(colors.black());
   const brand = brandData.find(data => data.id === itemdata?.brandId);
   return (
-    <TouchableOpacity style={item.card}>
+    <TouchableOpacity style={item.card} onPress={navigate} activeOpacity={0.8}>
       <View style={item.wishlist}>
         <Heart variant="Bold" size={20} color={colors.black()} />
       </View>
@@ -87,8 +88,9 @@ const toggleAddtoCart = async (itemId) => {
 };
 
 const Wishlist = ({data}) => {
+  const navigation = useNavigation()
   const renderItem = ({item}) => {
-    return <Item itemdata={item} onPress={() => toggleAddtoCart(item.productId)} />;
+    return <Item itemdata={item} onPress={() => toggleAddtoCart(item.productId)} navigate={() => navigation.navigate('ItemDetail', {itemId: item.productId})}/>;
   };
   return (
     <FlatList

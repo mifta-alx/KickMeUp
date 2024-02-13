@@ -6,6 +6,7 @@ import {
   View,
   Dimensions,
   ActivityIndicator,
+  FlatList
 } from 'react-native';
 import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {colors, fontType} from '../../theme';
@@ -13,7 +14,6 @@ import {Bag2, ArrowLeft2, Share, Heart, More, Bag} from 'iconsax-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {brandData} from '../../../data';
 import {formatPrice} from '../../utils/formatPrice';
-import {ListSize} from '../../components';
 import ActionSheet from 'react-native-actions-sheet';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
@@ -23,6 +23,14 @@ import {useFocusEffect} from '@react-navigation/native';
 
 const windowHeight = Dimensions.get('window').height;
 
+const ItemSize = ({value, backgroundColor, color, onPress}) => {
+  return (
+    <TouchableOpacity style={[listsize.box, {backgroundColor}]} onPress={onPress} activeOpacity={0.7}>
+      <Text style={[listsize.title, {color}]}>{value}</Text>
+    </TouchableOpacity>
+  );
+};
+
 const ItemDetail = ({route}) => {
   const {itemId, type} = route.params;
   const navigation = useNavigation();
@@ -30,7 +38,34 @@ const ItemDetail = ({route}) => {
   const [loading, setLoading] = useState(true);
   const [isWishlist, setIsWishlist] = useState(false);
   const [itemAmount, setItemAmount] = useState(0);
+  const [size, setSize] = useState(0)
 
+  const dataSize = [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
+
+  const ListSize = () => {
+    const renderItem = ({item, index}) => {
+      const backgroundColor =
+        index === size ? colors.black() : colors.extraLightGray();
+      const color = index === size ? colors.white() : colors.midGray();
+      return (
+        <ItemSize
+          value={item}
+          backgroundColor={backgroundColor}
+          color={color}
+          onPress={() => setSize(index)}
+        />
+      );
+    };
+    return (
+      <FlatList
+        data={dataSize}
+        renderItem={item => renderItem({...item})}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{gap: 10, paddingHorizontal: 24}}
+      />
+    );
+  };
   const actionSheetRef = useRef(null);
   const userId = auth().currentUser?.uid;
 
@@ -124,58 +159,67 @@ const ItemDetail = ({route}) => {
   };
 
   const toggleWishlist = async () => {
-    const userId = auth().currentUser.uid;
-    try {
-      const wishlistRef = firestore()
-        .collection('userData')
-        .doc(userId)
-        .collection('wishlist')
-        .doc(itemId);
-
-      const isWishlist = (await wishlistRef.get()).exists;
-
-      if (isWishlist) {
-        // Hapus dari daftar favorit jika sudah ada
-        await wishlistRef.delete();
-      } else {
-        // Tambahkan ke daftar favorit jika belum ada
-        await wishlistRef.set({
-          productId: itemId,
-          timestamp: firestore.FieldValue.serverTimestamp(),
-        });
+    const userId = auth().currentUser?.uid;
+    if (userId) {
+      try {
+        const wishlistRef = firestore()
+          .collection('userData')
+          .doc(userId)
+          .collection('wishlist')
+          .doc(itemId);
+  
+        const isWishlist = (await wishlistRef.get()).exists;
+  
+        if (isWishlist) {
+          // Hapus dari daftar favorit jika sudah ada
+          await wishlistRef.delete();
+        } else {
+          // Tambahkan ke daftar favorit jika belum ada
+          await wishlistRef.set({
+            productId: itemId,
+            timestamp: firestore.FieldValue.serverTimestamp(),
+          });
+        }
+  
+        setIsWishlist(!isWishlist);
+      } catch (error) {
+        console.error('Error updating favorite status:', error);
       }
-
-      setIsWishlist(!isWishlist);
-    } catch (error) {
-      console.error('Error updating favorite status:', error);
+    }else{
+      navigation.navigate('Login')
     }
   };
   const toggleAddtoCart = async () => {
-    const userId = auth().currentUser.uid;
-    try {
-      const cartRef = firestore()
-        .collection('userData')
-        .doc(userId)
-        .collection('cart')
-        .doc(itemId);
-      const isExist = (await cartRef.get()).exists;
-      if (isExist) {
-        await cartRef.update({
-          amount: firestore.FieldValue.increment(1),
-          timestamp: firestore.FieldValue.serverTimestamp(),
-        });
-      } else {
-        await cartRef.set({
-          productId: itemId,
-          size: 2,
-          amount: 1,
-          timestamp: firestore.FieldValue.serverTimestamp(),
-        });
+    const userId = auth().currentUser?.uid;
+    if (userId) {
+      try {
+        const cartRef = firestore()
+          .collection('userData')
+          .doc(userId)
+          .collection('cart')
+          .doc(itemId);
+        const isExist = (await cartRef.get()).exists;
+        if (isExist) {
+          await cartRef.update({
+            amount: firestore.FieldValue.increment(1),
+            timestamp: firestore.FieldValue.serverTimestamp(),
+          });
+        } else {
+          await cartRef.set({
+            productId: itemId,
+            size: dataSize[size],
+            amount: 1,
+            timestamp: firestore.FieldValue.serverTimestamp(),
+          });
+        }
+      } catch (error) {
+        console.error('Error add to cart status:', error);
       }
-    } catch (error) {
-      console.error('Error add to cart status:', error);
+    }else{
+      navigation.navigate('Login')
     }
   };
+  
   const brand = brandData.find(data => data.id === itemData?.brandId);
   return (
     <View style={styles.container}>
@@ -282,7 +326,7 @@ const ItemDetail = ({route}) => {
                 Size Chart
               </Text>
             </View>
-            <ListSize />
+            <ListSize/>
           </View>
           <View style={{paddingVertical: 10, gap: 10, paddingHorizontal: 24}}>
             {itemData?.productDescription && (
@@ -485,5 +529,18 @@ const bottomBar = StyleSheet.create({
     color: colors.white(),
     fontSize: 14,
     fontFamily: fontType['Pjs-SemiBold'],
+  },
+});
+const listsize = StyleSheet.create({
+  title: {
+    fontFamily: fontType['Pjs-SemiBold'],
+    fontSize: 14,
+  },
+  box: {
+    width: 40,
+    height: 40,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
