@@ -95,7 +95,7 @@ const Wishlist = ({data}) => {
   return (
     <FlatList
       data={data}
-      keyExtractor={item => item.id}
+      keyExtractor={item => item.productId}
       renderItem={item => renderItem({...item})}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={item.container}
